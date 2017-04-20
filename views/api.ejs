@@ -1,0 +1,996 @@
+<% include header.ejs %>
+<style type="text/css">
+body{
+    background-color: #fafafa
+}
+#title{
+    background-color: rgba(0, 92, 160, 1);
+}
+.page-scroll{
+    width: 100%;
+}
+.icon{
+    display:block;
+    float:left;
+    margin-top:16px;
+    width: 96%;
+    text-align: right;
+    font-weight:600;
+    color: white;
+    position: fixed;
+}
+.icon a{
+    color: white;
+    margin-left: 40px;
+}
+.navbar{
+    margin:0;
+    border-radius:0;
+}
+.navbar-bracket{
+    display:  block;
+    float:right;
+    overflow: hidden;
+    margin:26px 20px;
+    padding: 0;
+    list-style: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-family: Hiragino Sans GB, Microsoft Yahei !important;
+}
+.navbar ul li{
+    display:block;
+    float:left;
+    display: inline-block;
+    margin-top: -4px;
+    color: #000;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size:18px;
+    padding:0 20px;
+}
+.col-lg-3{
+    text-align:center;
+    width:25% !important;
+    float:left;
+    height:100px;
+    color:white;
+    padding:0;
+    line-height:100px;
+}
+.content{
+    height: 100%;
+    padding-top: 74px;
+}
+/*.container{
+  margin: 0;
+  padding: 0
+}*/
+.sec-content{
+    color: #808080;
+    background-color: #fff;
+    margin: 40px 15px;
+    padding: 40px 30px;
+    border: 1px solid #e9e9e9;
+    -webkit-box-shadow: 0 1px 50px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 50px rgba(0,0,0,0.1);
+}
+.api-menu{
+    position: fixed;
+    top: 74px;
+    height: 100%;
+    overflow: auto;
+}
+.api-content{
+    margin-left: 16.666666666666664%;
+    width: 75%;
+}
+.menu {
+    margin: 40px 0 40px 20px;
+    padding: 0;
+    list-style: none;
+    position: fixed;
+    overflow: hidden;
+}
+.menu-li{
+    color: #808080;
+    padding-bottom: 5px;
+    padding-left: 27px;
+}
+li img{
+    width: 23px;
+    height: 23px;
+}
+.title{
+    font-size: 22px;
+    font-weight: 600;
+    color: #000;
+    font-style: normal;
+    padding:10px 0;
+    font-family: Hiragino Sans GB, Microsoft Yahei !important;
+}
+.sec-content{
+    display: none;
+}
+.sec-content h1{
+    font-size: 25px;
+    color: #609be3;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.sec-content p{
+    margin-bottom: 20px;
+}
+.sec-content img{
+    display: block;
+    width: 90%;
+    margin:  0 auto;
+}
+.row{
+    padding-bottom: 50px;
+}
+.down{
+    float: right;
+    position: absolute;
+    bottom: 70px;
+    right: 70px;
+    max-width: 300px;
+    height: 50px;
+}
+.down a{
+    color: white;
+}
+.col-title{
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    padding-top: 20px;
+}
+.update-log{
+    min-height: 180px;
+}
+.update-log p{
+    font-size: 16px;
+}
+.code-content{
+    background-color: #fdf6e3;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+.code-content p{
+    color: #839496;
+}
+.bold{
+    font-weight: bold;
+    color: #000;
+}
+
+/********************color***************************/
+.pln{
+    color:#bd3613 !important;
+}
+.type{
+    color:#b58900 !important;
+}
+.str{
+    color:#269186 !important;
+}
+.kwd{
+    color:#859900 !important;
+}
+.cot{
+    color:#f5a122 !important;
+}
+.st{
+    color:#839496 !important;
+}
+
+.mac-down{
+    right: 410px;
+}
+.apiactive a{
+    color:#609be3 !important;
+}
+#intro{
+    margin: 40px 40px;
+}
+#about{
+    height: 400px;
+    margin: 40px 40px;
+}
+.about_left{
+    width: 60%;
+    height: auto;
+    float: left;
+}
+.about_left img{
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+.about_left p{
+    padding-left: 90px;
+}
+.about_right{
+    width: 40%;
+    height: auto;
+    float: left;
+}
+.about_right img{
+    width: 200px;
+    height: 200px;
+    margin: 0;
+}
+.group{
+    float: left;
+    width: 100%;
+    height: auto;
+    padding-top: 10px;
+}
+.group img{
+    width: 30px;
+    height: 30px;
+    left: 0;
+    margin: 0;
+}
+.group p{
+    margin-top:-30px;
+    margin-left: 30px;
+}
+}
+</style>
+<script>
+    //   .a{
+    //   color: #609be3 !important;
+    // }
+    // #{
+    //   display: block;
+    // }
+    // var url = window.location.hash;
+    // if(url){
+    //   url = url.split("#")[1];
+    // }else{
+    //   url = "index";
+    // }
+    // console.log(url);
+    // $("."+url+" a").css({"color":"#609be3 !important;"});
+    // $("#"+url).show();
+    // console.log(url);
+</script>
+<body>
+
+<nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
+    <!-- <div class="container"> -->
+    <div class="navbar-header page-scroll">
+        <!-- <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
+          <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+        </button> -->
+        <div class="logo"></div>
+        <div class="icon"><a href="#intro">平台介绍</a><a href="#about">联系我们</a></div>
+    </div>
+
+    <!-- <div class="collapse navbar-collapse navbar-right navbar-main-collapse">
+      <ul class="navbar-bracket">
+        <a href="/">
+          <li>首页</li>
+        </a>
+        <a href="/market">
+          <li>文档</li>
+        </a>
+          <a href="/console">
+            <li>控制台</li>
+          </a>
+          <a href="/signin">
+            <li>登陆</li>
+          </a>
+      </ul>
+    </div> -->
+    <!-- </div> -->
+</nav>
+
+<div class="content">
+<div class="api-container">
+<div class="col-sm-2 api-menu">
+    <ul class="menu">
+        <!-- li class="title bold">CUITAPI</li>
+        <li class="menu-li intro"><a href="#intro">平台介绍</a></li> -->
+        <li class="title bold"><img src="/img/sharesdk_icon-03.png"> 校内服务</li>
+        <li class="menu-li getAllPro"><a href="#getAllPro">获取所有专业</a></li>
+        <li class="menu-li getClassTB"><a href="#getClassTB">获取班级课表</a></li>
+        <li class="menu-li getJwcnew"><a href="#getJwcnew">获取教务处公告</a></li>
+        <li class="menu-li getIndexnew"><a href="#getIndexnew">获取学校官网首页公告</a></li>
+        <li class="menu-li getJsjnew"><a href="#getJsjnew">获取计算机学院公告</a></li>
+        <li class="menu-li getXgnew"><a href="#getXgnew">获取学工网公告</a></li>
+        <!-- 获取教务处验证码 -->
+        <li class="menu-li getGradeVfcode"><a href="#getGradeVfcode">获取教务处验证码</a></li>
+        <li class="menu-li getGrade"><a href="#getGrade">获取学生成绩</a></li>
+        <li class="title bold"><img src="/img/sharesdk_icon-01.png"> 娱乐</li>
+        <li class="menu-li getBtmovie"><a href="#getBtmovie">BT天堂最新电影</a></li>
+        <li class="title bold"><img src="/img/sharesdk_icon-02.png"> 更新中...</li>
+    </ul>
+</div>
+<div class="col-sm-10 api-content">
+<section class="sec-content" id="intro">
+    <h1 class="sec-title">平台介绍</h1>
+    <p>
+        这是一个提供API的平台，该平台已经包含了我校官网上非官方发布的一些API，例如：专业查询、课表查询等接口，还包含bt天堂网站最新电影API。但所有接口并非官方开放，所有信息，仅供参考。
+    </p>
+    <p>
+        目前我们正在处于开发阶段，我们会陆陆续续开放一些接口，如果你们对于这个项目感兴趣，我们可以免费开放代码和技术。同时也希望其他程序员将自己封装好的API在该平台上进行分享。
+    </p>
+</section>
+
+<section class="sec-content" id="about">
+    <h1 class="sec-title">联系我们</h1>
+    <p>
+        如果你在使用的时候遇到不开熏的问题，请务必要大声说出来，我们会尽快改善。
+    </p>
+    <div class="about_left">
+        <img src="/img/u148.png">  邮箱：1275417089@qq.com
+        <p>260639071@qq.com</p>
+        <img src="/img/u150.png">  电话：18380231467
+        <p>13086687554</p>
+    </div>
+    <div class="about_right">
+        <img src="/img/u154.png">
+        <div class="group">
+            <img src="/img/u152.png">
+            <p>交流群：326857923</p>
+        </div>
+    </div>
+    <!-- <p>
+
+      微信：z1275417089 QQ: 1275417089
+    </p>
+    <p>
+      ~O(∩_∩)O~
+    </p> -->
+</section>
+<section class="sec-content" id="getAllPro">
+    <h1 class="sec-title">获取所有专业</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取学校所有的专业信息，包括本部和龙泉。
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/classtb/getProData
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/classtb/getProData" target="_blank">http://moreapi.leanapp.cn/classtb/getProData</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"本部"：<span class="pln">{ ...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"龙泉"：<span class="pln">{ ...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"grade":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["2011级","2012级",...]</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"class":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["01班","02班",...]</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <p><span class="pln">}</p>
+        <p>
+</section>
+
+<!-- 获取教务处信息公告 -->
+<section class="sec-content" id="getJwcnew">
+    <h1 class="sec-title">获取教务处公告</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取学校教务处比较重要的公告信息。
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/jwcnew/jwcNews
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/jwcnew/jwcNews" target="_blank">http://moreapi.leanapp.cn/jwcnew/jwcNews</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <!--  <p>&nbsp;&nbsp;&nbsp;&nbsp;"grade":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["2011级","2012级",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;"class":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["01班","02班",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p><span class="pln">}</p> -->
+        <p>
+</section>
+
+<!-- 获取学校官网首页新闻 -->
+<section class="sec-content" id="getIndexnew">
+    <h1 class="sec-title">获取学校官网首页公告</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取获取学校官网首页中的新闻、公告。
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/indexnew/indexNew
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/indexnew/indexNew" target="_blank">http://moreapi.leanapp.cn/indexnew/indexNew</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data1":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data2":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data3":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data4":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <!-- <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p> -->
+        <!--  <p>&nbsp;&nbsp;&nbsp;&nbsp;"grade":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["2011级","2012级",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;"class":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["01班","02班",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p><span class="pln">}</p> -->
+        <p>
+</section>
+
+<!-- 获取计算机学院官网信息公告 -->
+<section class="sec-content" id="getJsjnew">
+    <h1 class="sec-title">获取计算机学院官网信息公告</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取计算机学院官网信息公告
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/jsjnew/jsjNew
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/jsjnew/jsjNew" target="_blank">http://moreapi.leanapp.cn/jsjnew/jsjNew</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data1":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data2":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data3":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data4":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <!--  <p>&nbsp;&nbsp;&nbsp;&nbsp;"grade":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["2011级","2012级",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;"class":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["01班","02班",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p><span class="pln">}</p> -->
+        <p>
+</section>
+
+<!-- 获取学工网信息公告 -->
+<section class="sec-content" id="getXgnew">
+    <h1 class="sec-title">获取学工网信息公告</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取学工网信息公告
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/xgnew/xgNew
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/xgnew/xgNew" target="_blank">http://moreapi.leanapp.cn/xgnew/xgNew</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data1":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data2":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data3":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data4":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "title":......,text":......,"url":...... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "title":......,"text":......,"url":...... }</span></p>
+        <!--  <p>&nbsp;&nbsp;&nbsp;&nbsp;"grade":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["2011级","2012级",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;"class":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["01班","02班",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p><span class="pln">}</p> -->
+        <p>
+</section>
+
+<!-- 获取教务处验证码 -->
+<section class="sec-content" id="getGradeVfcode">
+    <h1 class="sec-title">获取教务处验证码</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取学校教务处学生用户登录验证码。
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/grade/getvfcode
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        请求参数
+    </p>
+    <div class="code-content">
+        type （默认是3。1：直接返回base64数据。2：返回code，base64，message。3：直接返回展示图片）
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        1：直接使用 &lt;img src="/grade/getvfcode?type=1" alt=""&gt; <br/>
+        2：GET <a href="http://moreapi.leanapp.cn/grade/getvfcode?type=2" target="_blank">http://moreapi.leanapp.cn/grade/getvfcode?type=2</a> <br/>
+        3: 展示直接访问 <a href="http://moreapi.leanapp.cn/grade/getvfcode?type=3" target="_blank">http://moreapi.leanapp.cn/grade/getvfcode?type=3</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">type = 1</span></p>
+        <p>返回：图片data</p>
+        <p><span class="pln">type = 2</span></p>
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;图片data</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <p><span class="pln">}</span></p>
+        <p><span class="pln">type = 3</span></p>
+        <p>返回：图片</p>
+        <p>
+</section>
+
+<!-- 获取学生成绩 -->
+<section class="sec-content" id="getGrade">
+    <h1 class="sec-title">获取教务处学生成绩</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取学校教务处学生每个学期的成绩信息。（第一次获取教务处成绩的时候需要获取一次验证码，不然无法获取成绩）
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/grade/getgrade
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        请求参数
+    </p>
+    <div class="code-content">
+        name      （学生学号）
+        passwd    （学生密码）
+        verifycode （验证码）
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/grade/getgrade?name=2013051147&passwd=Rdq951019&verifycode=9x49" target="_blank">http://moreapi.leanapp.cn/grade/getgrade?name=2013051147&passwd=Rdq951019&verifycode=9x49</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">success:</span></p>
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":"200",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":<span class="pln">[{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"year":"2013-2014",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"team":"1",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"gpa":"79.6",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"course":<span class="pln">[{</span>"C语言程序设计I","period":"48","credit":"3","usual_grade":"92","final_exam_grade":"54","grade":"73"},{...<span class="pln">}]</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">},</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">...</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">]</span></p>
+        <p><span class="pln">}</span></p>
+        <p><span class="pln">error:</span></p>
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":"400",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"没有先获取验证码",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":"[]"</p>
+        <p><span class="pln">}</span></p>
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":"601",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":error message,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":"[]"</p>
+        <p><span class="pln">}</span></p>
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":"600",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":error message,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":"[]"</p>
+        <p><span class="pln">}</span></p>
+        <p>
+</section>
+
+<section class="sec-content" id="getBtmovie">
+    <h1 class="sec-title">获取BT天堂最新电影信息</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取BT天堂最新电影信息。
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/btmovie/btMovies
+    </div>
+    <p>
+        HTTP请求方式
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        调用示例
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/btmovie/btMovies" target="_blank">http://moreapi.leanapp.cn/btmovie/btMovies</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"data":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"0"：<span class="pln">{ "name":......,"anothername":......,"time":......,"url":......,"detail":......,"score":......,"img":..... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"1"：<span class="pln">{ "name":......,"anothername":......,"time":......,"url":......,"detail":......,"score":......,"img":..... }</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <!--  <p>&nbsp;&nbsp;&nbsp;&nbsp;"grade":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["2011级","2012级",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;"class":<span class="pln">{</span></p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["01班","02班",...]</p>
+         <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+         <p><span class="pln">}</p> -->
+        <p>
+</section>
+
+<section class="sec-content" id="getClassTB">
+    <h1 class="sec-title">获取班级信息</h1>
+    <p>
+        描述:
+    </p>
+    <div class="code-content">
+        获取班级的课表详情。
+    </div>
+    <p>
+        URI:
+    </p>
+    <div class="code-content">
+        http://moreapi.leanapp.cn/classtb/showclass
+    </div>
+    <p>
+        HTTP请求方式：
+    </p>
+    <div class="code-content">
+        GET
+    </div>
+    <p>
+        参数：(参数必须严格按照学校的风格，不然获取不到数据哦~~)
+    </p>
+    <div class="code-content">
+        <p>depart 学院(eg:计算机学院)</p>
+        <p>pro 专业(eg:计算机科学本科(计工))</p>
+        <p>grade 年级(eg:2013级)</p>
+        <p>sendClass 班级(eg:02班)</p>
+    </div>
+    <p>
+        调用示例：
+    </p>
+    <div class="code-content">
+        GET <a href="http://moreapi.leanapp.cn/classtb/showclass?depart=计算机学院&pro=计算机科学本科(应用)&grade=2014级&sendClass=02班" target="_blank">http://moreapi.leanapp.cn/classtb/showclass?depart=计算机学院&pro=计算机科学本科(应用)&grade=2014级&sendClass=02班</a>
+    </div>
+    <p>
+        返回结果
+    </p>
+    <div class="code-content">
+        <p><span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"code":200,</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"message":"success",</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;"classTableData":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"className"：<span class="pln">{ 计算机学院计算机科学本科(计工)本科2013级02班课表 },</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"counsellor"：<span class="pln">{ 班主任:-- },</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"remarks"：<span class="pln">{ 备注： },</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"type":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["上午第一二节课","上午第三四节课"...]</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">},</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"mon":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[".net构架及应用1--7周廖德钦1506","HTML51--6周林岗1309"...]</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">},</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"tue":<span class="pln">{</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;["就业指导9--17周姚亚岚2206汇编语言程序设计1--8周张睿1407","HDL与可编程器件5--9周邹云海1206"...]</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">},</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;。。。。。。</span></p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;<span class="pln">}</span></p>
+        <p><span class="pln">}</p>
+        <p>
+</section>
+<section class="sec-content" id="register">
+    <h1 class="sec-title">用户注册</h1>
+    <p class="bold st"><span class="pln">pcs</span>.<span class="cot">signUp</span>(<span class="str">email</span>,<span class="str">password</span>,<span class="str">callback</span>);</p>
+    <p>注意：注册时系统会向该邮箱发送验证邮件，用户需要验证邮箱，没有进行验证的用户无法登录</p>
+    <p>参数：email(邮箱，必须),password(密码，必须),callback(回调，必须)</p>
+    <p>回调写法:</p>
+    <div class="code-content">
+        <p><span class="pln">pcs</span>.<span class="cot">signUp</span>(<span class="str">email</span>,<span class="str">password</span>,{</p>
+        <p>&nbsp;&nbsp;<span class="str">success</span>: <span class="kwd">function</span>(<span class="str">user</span>){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;// 注册成功之后，执行其他逻辑.</p>
+        <p>&nbsp;&nbsp;},</p>
+        <p>&nbsp;&nbsp;<span class="str">error</span>: <span class="kwd">function</span>(<span class="str">error</span>){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;// 注册失败之后，执行其他逻辑.</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>})</p>
+    </div>
+</section>
+<section class="sec-content" id="signin">
+    <h1 class="sec-title">用户登录</h1>
+    <p class="bold st"><span class="pln">pcs</span>.<span class="cot">logIn</span>(<span class="str">email</span>,<span class="str">password</span>,<span class="str">callback</span>);</p>
+    <p>注意：没有进行邮箱验证的用户无法登录</p>
+    <p>参数：email(邮箱，必须),password(密码，必须),callback(回调，必须)</p>
+    <p>回调写法:</p>
+    <div class="code-content">
+        <p><span class="pln">pcs</span>.<span class="cot">logIn</span>(<span class="str">email</span>,<span class="str">password</span>,{</p>
+        <p>&nbsp;&nbsp;<span class="str">success</span>:<span class="kwd"> function</span>(<span class="str">user</span>){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;// 登录成功之后，执行其他逻辑.</p>
+        <p>&nbsp;&nbsp;},</p>
+        <p>&nbsp;&nbsp;<span class="str">error</span>:<span class="kwd"> function</span>(<span class="str">error</span>){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;// 登录失败之后，执行其他逻辑.</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>})</p>
+    </div>
+</section>
+<section class="sec-content" id="changePW">
+    <h1 class="sec-title">更改用户密码</h1>
+    <p class="bold st"><span class="pln">pcs</span>.<span class="cot">changePassword</span>(<span class="str">password</span>,<span class="str">newPassword</span>,<span class="str">callback</span>);</p>
+    <p>注意：更换密码需要填写以前的密码</p>
+    <p>参数：password(密码，必须),newPassword(新密码，必须),callback(回调，必须)</p>
+    <p>回调写法:</p>
+    <div class="code-content">
+        <p><span class="pln">pcs</span>.<span class="cot">changePassword</span>(<span class="str">password</span>,<span class="str">newPassword</span>,{</p>
+        <p>&nbsp;&nbsp;<span class="str">success</span>:<span class="kwd"> function</span>(<span class="str">user</span>){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;// 修改密码成功之后，执行其他逻辑.</p>
+        <p>&nbsp;&nbsp;},</p>
+        <p>&nbsp;&nbsp;<span class="str">error</span>: <span class="kwd">function</span>(<span class="str">error</span>){</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;// 修改密码失败之后，执行其他逻辑.</p>
+        <p>&nbsp;&nbsp;}</p>
+        <p>})</p>
+    </div>
+</section>
+<section class="sec-content" id="logOut">
+    <h1 class="sec-title">退出登录</h1>
+    <p class="bold st"><span class="pln">pcs</span>.<span class="cot">logOut</span>();</p>
+    <p>参数：不需要</p>
+    <p>返回值：</p>
+    <div class="code-content">
+        <p>成功</p>
+        <p>{</p>
+        <p>&nbsp;&nbsp;"code": 1,</p>
+        <p>}</p>
+        <p>失败</p>
+        <p>{</p>
+        <p>&nbsp;&nbsp;"code": 0,</p>
+        <p>}</p>
+    </div>
+    <p>实例：</p>
+    <div class="code-content">
+        <p><span class="pln">pcs</span>.<span class="cot">logOut()</span>;</p>
+    </div>
+</section>
+<section class="sec-content" id="pack">
+    <h1 class="sec-title">打包工具下载</h1>
+    <p>此工具为PCS插件应用打包工具，用于将web程序打包成apk形式的本地插件，适合页面较大，资源文件较多的web应用或者游戏,插件本地化后用户使用就像使用本地app一样急速方便。</p>
+    <div class="row">
+        <div class="col-sm-8 update-log">
+            <h2 class="col-title">打包工具文件资源说明：</h2>
+            <p>assets文件夹 用于存放网页等资源文件</p>
+            <p>res文件夹 用于存放apk资源以及布局文件</p>
+            <p>AndroidManifest.xml apk清单文件</p>
+            <p>aapt.exe 资源打包程序</p>
+            <p>android.jar android framework</p>
+            <p>ApkPackageTool.bat 打包批处理文件</p>
+            <p>classes.dex 程序dex文件</p>
+            <p>debug.keystore Android debug秘钥，apk签名使用</p>
+            <p>PlugApkpackageTool.jar java可执行程序</p>
+
+            <h2 class="col-title">使用环境:</h2>
+            <p>windows,mac系统，安装有java执行环境</p>
+
+            <h2 class="col-title">使用方法</h2>
+            <p>本工具使用非常简单，只需要以下步骤：</p>
+            <p>1.将你的web工程资源拷贝到assets目录下（注意：程序默认加载的web页面为index.html，所以index.html必须直接位于assets目录下）；</p>
+            <p>2.点击运行ApkPackageTool.bat </p>
+            <p>3.运行完成后会生成未签名的app.apk以及debug签名的app_signed.apk</p>
+            <p>4.在应用创建页面，选择创建native应用，上传apk时上传app_signed.apk即可，应用的包名必须为com.cuit.webapp.WebApp,其他参数无强制要求。</p>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg down col-sm-4">
+            <a href="http://7xojmy.com1.z0.glb.clouddn.com/ApkPackageTool.zip?attname=">
+                windows下载
+            </a>
+        </button>
+        <button type="button" class="btn btn-primary btn-lg down col-sm-4 mac-down">
+            <a href="http://ac-dkxqtxhg.clouddn.com/99d86d5d65cd5ee6.zip">
+                mac下载
+            </a>
+        </button>
+    </div>
+</section>
+</div>
+</div>
+</div>
+<% include footer.ejs %>
+<script>
+    init();
+    function init(){
+        var url = window.location.hash;
+        if(url){
+            url = url.split("#")[1];
+            console.log(url);
+        }else{
+            url = "intro";
+        }
+        console.log(url);
+        $(".menu-li").removeClass("apiactive");
+        $("."+url).addClass("apiactive");
+        $("#"+url).show();
+    }
+    $("body").on("click",".menu-li",function(){
+        var url = $(this).children("a").attr("href");
+        var url = url.split("#")[1];
+        console.log(url);
+        $(".sec-content").hide();
+        // $("."+url+" a").css({"color":"#609be3 !important;"});
+        $(".menu-li").removeClass("apiactive");
+        $("."+url).addClass("apiactive");
+        $("#"+url).show();
+    })
+    $("body").on("click",".icon a",function(){
+        var url = $(this).attr("href");
+        var url = url.split("#")[1];
+        console.log(url);
+        $(".sec-content").hide();
+        // $("."+url+" a").css({"color":"#609be3 !important;"});
+        $(".menu-li").removeClass("apiactive");
+        $("."+url).addClass("apiactive");
+        $("#"+url).show();
+    })
+</script>
+</html>

@@ -1,0 +1,342 @@
+body {
+    background-color: #fafafa
+}
+
+#title {
+    background-color: rgba(0, 92, 160, 1);
+}
+
+.page-scroll {
+    width: 100%;
+}
+
+.icon {
+    display: block;
+    float: left;
+    margin-top: 16px;
+    width: 96%;
+    text-align: right;
+    font-weight: 600;
+    color: white;
+    position: fixed;
+}
+
+.icon a {
+    color: white;
+    margin-left: 40px;
+}
+
+.navbar {
+    margin: 0;
+    border-radius: 0;
+}
+
+.navbar-bracket {
+    display: block;
+    float: right;
+    overflow: hidden;
+    margin: 26px 20px;
+    padding: 0;
+    list-style: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    font-family: Hiragino Sans GB, Microsoft Yahei !important;
+}
+
+.navbar ul li {
+    display: block;
+    float: left;
+    display: inline-block;
+    margin-top: -4px;
+    color: #000;
+    vertical-align: middle;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 18px;
+    padding: 0 20px;
+}
+
+.col-lg-3 {
+    text-align: center;
+    width: 25% !important;
+    float: left;
+    height: 100px;
+    color: white;
+    padding: 0;
+    line-height: 100px;
+}
+
+.content {
+    height: 100%;
+    padding-top: 74px;
+}
+
+
+/*.container{
+      margin: 0;
+      padding: 0
+    }*/
+
+.sec-content {
+    color: #808080;
+    background-color: #fff;
+    margin: 40px 15px;
+    padding: 40px 30px;
+    border: 1px solid #e9e9e9;
+    -webkit-box-shadow: 0 1px 50px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 50px rgba(0, 0, 0, 0.1);
+}
+
+.api-menu {
+    position: fixed;
+    top: 74px;
+    height: 100%;
+    overflow: auto;
+}
+
+.api-content {
+    margin-left: 16.666666666666664%;
+    width: 75%;
+}
+
+.menu {
+    margin: 40px 0 40px 20px;
+    padding: 0;
+    list-style: none;
+    position: fixed;
+    overflow: hidden;
+}
+
+.menu-li {
+    color: #808080;
+    padding-bottom: 5px;
+    /*padding-left: 27px;*/
+}
+
+li img {
+    width: 23px;
+    height: 23px;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #000;
+    font-style: normal;
+    padding: 10px 0;
+    font-family: Hiragino Sans GB, Microsoft Yahei !important;
+}
+
+.sec-content {
+    display: none;
+}
+
+.sec-content h1 {
+    font-size: 25px;
+    color: #609be3;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.sec-content p {
+    margin-bottom: 20px;
+}
+
+.sec-content img {
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.row {
+    padding-bottom: 50px;
+}
+
+.down {
+    float: right;
+    position: absolute;
+    bottom: 70px;
+    right: 70px;
+    max-width: 300px;
+    height: 50px;
+}
+
+.down a {
+    color: white;
+}
+
+.col-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #000;
+    padding-top: 20px;
+}
+
+.update-log {
+    min-height: 180px;
+}
+
+.update-log p {
+    font-size: 16px;
+}
+
+.code-content {
+    background-color: #fdf6e3;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.code-content p {
+    color: #839496;
+    word-break: break-all;
+}
+
+.bold {
+    font-weight: bold;
+    color: #000;
+}
+
+
+/********************color***************************/
+
+.pln {
+    color: #bd3613 !important;
+}
+
+.type {
+    color: #b58900 !important;
+}
+
+.str {
+    color: #269186 !important;
+}
+
+.kwd {
+    color: #859900 !important;
+}
+
+.cot {
+    color: #f5a122 !important;
+}
+
+.st {
+    color: #839496 !important;
+}
+
+.mac-down {
+    right: 410px;
+}
+
+.apiactive a {
+    color: #609be3 !important;
+}
+
+#intro {
+    margin: 40px 40px;
+}
+
+#about {
+    height: 400px;
+    margin: 40px 40px;
+}
+
+.about_left {
+    width: 60%;
+    height: auto;
+    float: left;
+}
+
+.about_left img {
+    width: 30px;
+    height: 30px;
+    float: left;
+}
+
+.about_left p {
+    padding-left: 90px;
+}
+
+.about_right {
+    width: 40%;
+    height: auto;
+    float: left;
+}
+
+.about_right img {
+    width: 200px;
+    height: 200px;
+    margin: 0;
+}
+
+.group {
+    float: left;
+    width: 100%;
+    height: auto;
+    padding-top: 10px;
+}
+
+.group img {
+    width: 30px;
+    height: 30px;
+    left: 0;
+    margin: 0;
+}
+
+.group p {
+    margin-top: -30px;
+    margin-left: 30px;
+}
+
+#apimanage_add .code-content{
+	padding:15px 20px;
+}
+
+#apimanage_add input{
+	width: 100%;
+	border:0;
+	height: 100%;
+	padding:5px 10px;
+	border-radius: 5px;
+}
+
+#apimanage_add .check{
+	display: inline-block;
+}
+
+#apimanage_add .check div{
+	display: inline-block;
+}
+#apimanage_add .check label{
+	position: relative;
+	bottom:4px;
+	font-weight: 100;
+	margin: 0;
+}
+
+#apimanage_add .check input{
+	width: inherit;
+	height: inherit;
+	border: inherit;
+}
+
+#apimanage_add .check{
+    position: relative;
+    top:5px;
+    left:10px;
+}
+
+.ml-10{
+    margin-left: 10px;
+}
+.ml-20{
+    margin-left: 20px;
+}
+
+.color-r{
+    color: red;
+}
+
+.color-o{
+    color: #ff9800;
+}

@@ -1,0 +1,142 @@
+/*@import url(http://fonts.useso.com/css?family=Oswald);*/
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    /*font-family: 'Open Sans', sans-serif;*/
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    color: #4f535f;
+    background-color: #fff;
+    -webkit-overflow-scrolling: touch;
+}
+i {
+    display: block;
+    font-size: 25px;
+    font-style: normal;
+    padding:block;
+}
+
+a{
+	text-decoration: none;
+	color: black;
+}
+a:active,
+a:focus,
+a:hover{
+	text-decoration: none;
+	color: black;
+}
+.navbar{
+  font-family: '微软雅黑',"Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  height: 60px;
+}
+
+.active li{
+    color: #86CC2A !important;
+}
+button,a,.modal{
+    cursor: pointer;
+    /*cursor:url("../img/add.jpg");*/
+  }
+
+  
+ @media (min-width: 767px){
+      .navbar {
+          padding: 10px 0;
+          border-bottom: 0;
+          background: 0;
+          -webkit-transition: background .3s ease-in-out,padding .3s ease-in-out;
+          -moz-transition: background .3s ease-in-out,padding .3s ease-in-out;
+          transition: background .3s ease-in-out,padding .3s ease-in-out;
+      }
+    }
+    @media (max-width: 767px){
+      .navbar-bracket li {
+          padding:0;
+          /*padding: 15px 20px;*/
+          margin: 15px 20px;
+          display: block;
+          width: 40px;
+          text-align: right !important;
+          font-size: 20px;
+          color: #FFF;
+      }
+      .navbar-bracket a:last-child li {
+          padding-top: 50px;
+      }
+      .navbar-bracket{
+         margin:20px 0 0 0 !important;
+      }
+      .navbar-bracket a{
+        display: block;
+      }
+      .navbar-collapse {
+        height: 100%;
+        max-height: 100% !important; 
+        padding-right: 0px; 
+        border-top: 0px !important;
+      }
+
+      .loading-cover {
+          position: fixed;
+          z-index: 4;
+          margin: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0,0,0,.8);
+          color: #fff;
+      }
+    }
+
+ @media (min-width: 767px){
+  .top-nav-collapse{
+    background-color: rgba(255,255,255,0.97);
+    margin-top: 0;
+    padding:0px !important;
+    box-shadow: 0 0 1px 0px rgba(0,0,0,0.3),0 0 6px 2px rgba(0,0,0,0.15);
+   }
+ }
+
+ .top-nav-collapse{
+    background-color: rgba(255,255,255,0.97);
+    margin-top: 0;
+    padding: 0px !important;
+    box-shadow: 0 0 1px 0px rgba(0,0,0,0.3),0 0 6px 2px rgba(0,0,0,0.15);
+ }
+ .top-nav-collapse .icon, .top-nav-collapse .navbar-toggle,.top-nav-collapse .navbar-bracket li{
+    /*color: #000;*/
+ }
+
+ .navbar .logo{
+    position: absolute;
+    float: left;
+    width: 152px;
+    height: 40px;
+    margin: 10px 10px 10px 5px;
+    margin-left: 80px;
+    /*text-indent: -9999px;*/
+    /*background: url(/img/moresdk-01.png) no-repeat;*/
+    background-size: 100% 100%;
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: bold;
+    z-index: 2;
+}
+
+.ml-20{margin-left: 20px;}
+.mt-20{margin-top: 20px;}
+.ml-30{margin-left: 30px;}
+.mt-50{margin-top: 50px;}
+
+.size-16{
+  font-size: 16px;
+}

@@ -1,0 +1,589 @@
+<% include header.ejs %>
+<link href='/css/style.css', rel='stylesheet', type='text/css'>
+<link href="/icheck/icheck.css" rel="stylesheet">
+<style type="text/css">
+  .type-li{
+    padding: 10px 10px;
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+  }
+  .type-li:first-child{
+    border-top: 1px solid #eee;
+  }
+  .icon-x{
+    float: right;
+    margin-right: 10px;
+    margin-top: 10px;
+    color: red;
+    cursor: pointer;
+  }
+  .btn-content{
+    text-align: center;
+      margin-top: 50px;
+  }
+  .btn-content .btn{
+      width: 150px;
+      margin:0 20px;
+  }
+  .apimanage_add.apiactive a{
+    color: white !important;
+  }
+</style>
+<nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
+  <div class="navbar-header page-scroll">
+    <a href="/">
+      <div class="logo">APIMANAGE</div>
+    </a>
+    <div class="icon">
+      <label class="js-down"><a href="" target="_blank">下载JS</a></label>
+      <label class="icon-item"><a href="#intro">API介绍</a></label>
+      <label class="icon-item apimanage_add"><a href="#apimanage_add">添加API</a></label>
+    </div>
+  </div>
+</nav>
+<body>
+
+<div class="content">
+    <div class="api-container">
+        <div class="col-sm-2 api-menu">
+            <ul class="menu">
+            </ul>
+        </div>
+        <div class="col-sm-10 api-content">
+            <section class="sec-content apiactive" id="intro" style="display:block">
+            <h1 class="sec-title">平台介绍</h1>
+            <p class="color-o size-16 js-link"></p>
+            </section>
+            <section class="sec-content" id="apimanage_add">
+                <input type="hidden" name="api_id" id="api-id">
+                <p>API名称:</p>
+                <div class="code-content">
+                    <input type="text" name="api_name" id="api-name" placeholder="获取XX信息">
+                </div>
+                <p>API所属类别:</p>
+                <div class="code-content">
+                    <input type="text" name="app_type" id="api-type" placeholder="轮播图API">
+                    <div class="type-list">
+                    </div>
+                </div>
+                <p>描述:</p>
+                <div class="code-content">
+                    <input type="text" name="api_desc" id="api-desc" placeholder="获取XX的XX详情">
+                </div>
+                <p>URI:</p>
+                <div class="code-content">
+                    <input type="text" name="api_url" id="api-url" placeholder="http://moreapi.leanapp.cn/classtb/getProData">
+                </div>
+                <p>HTTP请求方式</p>
+                <div class="code-content">
+                    <!-- Single button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="dropdown-text" id="api-request">GET</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a >GET</a></li>
+                            <li><a >POST</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <p>请求参数</p>
+                <div class="code-content">
+                    <div class="parameter-list">
+                        <div class="parameter-li">
+                            <input type="text" class="para-name"  style="width:150px;"  placeholder="参数名">
+                            <input type="text" class="para-type"  style="width:150px;"  placeholder="参数类型">
+                            <input type="text" class="para-desc"  style="width:150px;"  placeholder="参数描述">
+                            <input type="text" class="para-remark"  style="width:150px;"  placeholder="参数示例值">
+                            <div class="check">
+                                <input type="checkbox" class="para-must"  checked>
+                                <label for="input-1">必须参数</label>
+                            </div>
+                            <div class="iconfont icon-x"></div>
+                        </div>
+                    </div>
+                    <div class="mt-20">
+                        <button type="button" class="btn btn-primary add">添加</button>
+                    </div>
+                </div>
+                <!-- <p>调用示例</p>
+                <div class="code-content">
+                    <input type="text" id="api-demo" placeholder="http://moreapi.leanapp.cn/classtb/getProData">
+                </div> -->
+
+                <button type="button" class="btn btn-primary btn-lg mt-50 btn-block create">创建</button>
+            </section>
+        </div>
+    </div>
+</div>
+
+<% include footer.ejs %>
+<script type="text/javascript" src="/icheck/jquery.icheck.min.js"></script>
+<script>
+  //添加参数
+  $(".add").on("click",function () {
+        var li = '<div class="parameter-li mt-20">'+
+                '<input type="text" class="para-name"  style="width:150px;margin-right: 6px" placeholder="参数名">'+
+                '<input type="text" class="para-type"  style="width:150px;margin-right: 6px" placeholder="参数类型">'+
+                '<input type="text" class="para-desc"  style="width:150px;margin-right: 6px" placeholder="参数描述">'+
+                '<input type="text" class="para-remark"  style="width:150px;margin-right: 6px" placeholder="参数示例值">'+
+                '<div class="check">'+
+                '<input type="checkbox" class="para-must"  checked>'+
+                '<label for="input-1">必须参数</label>'+
+                '</div>'+
+                '<div class="iconfont icon-x"></div>'+
+                '</div>';
+        $(".parameter-list").append(li);
+        $('.check input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio-blue'
+        });
+  })
+
+  //点击下载 下载生成js
+  // $(document).on("click",".js-down",function(){
+  //   var data = {
+  //         app_id      : id
+  //     }
+  //     //获取项目列表
+  //     var url = "/api/down";
+  //     var type = "GET";
+  //     sendQuery(url,type,data,{
+  //         success:function(result){
+  //             //获取当前项目名称
+  //             var data = result.data;
+  //             layer.msg('操作成功', {icon: 1});
+  //         },
+  //         error:function(error){
+  //             layer.msg(error.message, {icon: 2});
+  //         }
+  //     })
+  // })
+
+  $(document).on("click",".icon-x",function(){
+    $(this).parent().remove();
+  })
+
+  //创建初始化
+  $(".apimanage_add").on("click",function(){
+    //初始化
+    //设置id
+    $("#api-id").val("");
+    //设置为更改
+    $(".create").text("创建");
+    $("#api-name").val("");
+    $("#api-type").val("");
+    $("#api-desc").val("");
+    $("#api-url").val("");
+    $("#api-request").text("GET");  
+    $("#api-demo").val("");
+    $(".parameter-list").empty();
+    var li = '<div class="parameter-li mt-20">'+
+                '<input type="text" class="para-name"  style="width:150px;margin-right: 6px" placeholder="参数名">'+
+                '<input type="text" class="para-type"  style="width:150px;margin-right: 6px" placeholder="参数类型">'+
+                '<input type="text" class="para-desc"  style="width:150px;margin-right: 6px" placeholder="参数描述">'+
+                '<input type="text" class="para-remark"  style="width:150px;margin-right: 6px" placeholder="参数示例值">'+
+                '<div class="check">'+
+                '<input type="checkbox" class="para-must"  checked>'+
+                '<label for="input-1">必须参数</label>'+
+                '</div>'+
+                '<div class="iconfont icon-x"></div>'+
+                '</div>';
+    $(".parameter-list").append(li);
+    $('.check input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio-blue'
+    });                
+  })
+
+
+  //点击创建生成
+  $(".create").on("click",function () {
+      //获取API名称
+      var api_id   = $("#api-id").val();
+
+      var api_name = $("#api-name").val();
+      //API所属类别:
+      var api_type = $("#api-type").val();
+      //描述:
+      var api_desc = $("#api-desc").val();
+      //URI:
+      var api_url = $("#api-url").val();
+      //HTTP请求方式
+      var api_request = $("#api-request").text();
+      //请求参数
+      var api_para = [];
+      $(".parameter-li").each(function (i,v) {
+          if($(this).children(".para-name").val()){
+              var api_para_li = {
+                  para_name:$(this).children(".para-name").val(),
+                  para_type:$(this).children(".para-type").val(),
+                  para_desc:$(this).children(".para-desc").val(),
+                  para_remark:$(this).children(".para-remark").val(),
+                  para_must:$(this).find(".para-must").parent().hasClass("checked")
+              }
+              api_para.push(api_para_li);
+          }
+      })
+      //HTTP请求方式
+      var api_demo = $("#api-demo").val();
+
+      var data = {
+          api_id      : api_id,
+          app_id      : id,
+          api_name    : api_name,
+          api_type    : api_type,
+          api_desc    : api_desc,
+          api_url     : api_url,
+          api_request : api_request,
+          api_para    : JSON.stringify(api_para),
+          api_demo    : api_demo
+      }
+      console.log(data);
+      //获取项目列表
+      if(api_id){
+        //更改
+        var url = "/api/edit";
+      }else{
+        //创建
+        var url = "/api/addbynode";
+      }
+      
+      var type = "GET";
+      sendQuery(url,type,data,{
+          success:function(result){
+              //获取当前项目名称
+              var data = result.data;
+              layer.msg('操作成功', {icon: 1});
+              window.location.reload();
+              // $(".logo").text(data.app_name);
+          },
+          error:function(error){
+              layer.msg(error.message, {icon: 2});
+          }
+      })
+  })
+
+  var id = '';
+  //项目data
+  var apiList = [];
+  //请求该api接口
+  $(function(){
+    $('.check input').iCheck({
+      checkboxClass: 'icheckbox_square-blue',
+      radioClass: 'iradio-blue'
+    });
+
+    //获取当前链接
+    // var appid = 
+    var search = location.search;
+    if(search){
+      id = search.split("?appid=")[1];
+      $(".js-down a").attr("href","/api/link?app_id="+id+"&type=down");
+      //生成js引入链接
+      $(".js-link").html('&lt;script type="text/javascript" src="http://apimanage.leanapp.cn/api/link?app_id='+id+'"> &lt;/script>');
+    }else{
+      location.href="/";
+    }
+    console.log(id);
+    
+
+     if(id){
+         //获取项目列表
+         var data = {id:id};
+         var url = "/app/detail";
+         var type = "GET";
+         sendQuery(url,type,data,{
+             success:function(result){
+                 //获取当前项目名称
+                 var data = result.data;
+                 $("#intro").append("<p>"+data.app_desc+"</p>");
+             },
+             error:function(error){
+                 // alert(error.message);
+                 layer.msg(error.message, {icon: 2});
+                 console.log(error);
+             }
+         })
+
+         //获取项目所有的api
+         var data = {app_id:id};
+         var url = "/api/list";
+         var type = "GET";
+         sendQuery(url,type,data,{
+             success:function(result){
+                 //获取当前项目名称
+                 var data = result.data;
+                 apiList = data;
+                 console.log(data);
+                 //遍历数据
+                 formateData(data);
+             },
+             error:function(error){
+                 // alert(error.message);
+                 layer.msg(error.message, {icon: 2});
+                 console.log(error);
+             }
+         })
+     }
+  })
+  
+  function formateData(data) {
+      var menu = '';
+      for(var i = 0; i < data.length; i++){
+          var title = '<li class="title bold">'+data[i].api_type+'</li>';
+          for(var j = 0 ; j < data[i].api.length;j++){
+              //遍历api
+              var api = '<li class="menu-li '+data[i].api[j].objectId+'"><a href="#'+data[i].api[j].objectId+'">'+data[i].api[j].api_name+'</a></li>';
+              title+=api;
+
+              //判断是否有参数值
+              var paraContent = ''
+              for(var k = 0; k < data[i].api[j].api_para.length; k++){
+                  var paraData = data[i].api[j].api_para[k];
+                  paraContent+='<p>'+
+                      paraData.para_name+
+                      ' <span class="ml-10">['+
+                      paraData.para_desc+
+                      '</span> <span class="ml-10">'+
+                      paraData.para_type+
+                      ']</span> <span class="ml-10">('+
+                      paraData.para_remark+
+                      ')</span> <span class="ml-10 color-r">'+
+                      (paraData.para_must ? "必须":"")+
+                      '</span></p>';
+              }
+
+              if(paraContent){
+                  paraContent = '<p>请求参数</p><div class="code-content">'+paraContent+'</div>';
+              }
+
+              //添加内容
+              var section = '<section class="sec-content" id="'+data[i].api[j].objectId+'">'+
+                            '<h1 class="sec-title">'+data[i].api[j].api_name+'</h1>'+
+                            '<p>描述:</p>'+
+                            '<div class="code-content">'+data[i].api[j].api_desc+'</div>'+
+                            '<p>URI:</p>'+
+                            '<div class="code-content api-url">'+data[i].api[j].api_url+'</div>'+
+                            '<p>HTTP请求方式</p>'+
+                            '<div class="code-content api-request">'+data[i].api[j].api_request+'</div>'+
+                            paraContent+
+                            // '<p> 调用示例 </p>'+
+                            // '<div class="code-content">'+ data[i].api[j].api_request +
+                            // '<a class="ml-10 api-demo" href="'+data[i].api[j].api_demo+'" target="_blank">'+data[i].api[j].api_demo+'</a></div>'+
+                            '<p> 返回结果 <span class="btn btn-success make ml-10">生成结果</span></p>'+
+                            '<div class="code-content api-result"></div>'+
+                            '<div class="btn-content" data-id="'+data[i].api[j].objectId+'">'+
+                            '<button class="btn btn-danger btn-delete" type="submit">删除</button>'+
+                            '<button class="btn btn-info btn-edit" type="submit">编辑</button>'+
+                            '</div>'+
+                            '</section>';
+              $(".api-content").append(section);
+          }
+          menu += title;
+      }
+      $(".menu").empty().append(menu);
+  }
+
+  //获取生成结果
+  $(document).on("click",".make",function(){
+    var parent = $(this).parent().parent();
+    var id = parent.attr("id");
+    var url = "/api/get_api_result";
+    var type = "GET";
+    var data = {api_id:id};
+    sendQuery(url,type,data,{
+      success:function(result){
+        //获取当前项目名称
+        var data = result.data;
+        console.log(data);
+        layer.msg('获取成功', {icon: 1});
+        var resultView = '<p>{</p>'+
+                          '<p class="ml-20">"code":'+result.code+",</p>"+
+                          '<p class="ml-20">"message":'+result.message+",</p>"+
+                          '<p class="ml-20">"data":['+JSON.stringify(result.data[0])+"]</p>"+
+                          '<p>}</p>';
+        parent.children(".api-result").empty().append(resultView);
+      },
+      error:function(error){
+        layer.msg(error.message, {icon: 2});
+      }
+    })
+
+    // //获取父元素
+    // var parent = $(this).parent().parent();
+    // var that = this;
+    // //获取http请求方式
+    // var api_request = parent.find(".api-request").text();
+    // //获取调用链接
+    // var api_url = parent.find(".api-url").text();
+    // //获取请求链接
+    // var para = {};
+    // var id = parent.attr("id");
+    // for(var i = 0; i < apiList.length;i++){
+    //   for(var j = 0; j < apiList[i].api.length;j++){
+    //     if(apiList[i].api[j].objectId == id){
+    //       var api_para = apiList[i].api[j].api_para;
+    //       console.log(api_para);
+    //       for(var k = 0; k < api_para.length; k++){
+    //         para[api_para[k].para_name] = api_para[k].para_remark;
+    //       }   
+    //     }
+    //   }
+    // }
+    // console.log(api_url);
+    // console.log(para);
+
+    // //判断是什么请求
+    // var url = api_url;
+    // var type = api_request;
+    // sendQuery(url,type,para,{
+    //   success:function(result){
+    //     //获取当前项目名称
+    //     var data = result.data;
+    //     layer.msg('获取成功', {icon: 1});
+    //     var resultView = '<p>{</p>'+
+    //                       '<p class="ml-20">"code":'+result.code+",</p>"+
+    //                       '<p class="ml-20">"message":'+result.message+",</p>"+
+    //                       '<p class="ml-20">"data":['+JSON.stringify(result.data[0])+"]</p>"+
+    //                       '<p>}</p>';
+    //     parent.children(".api-result").empty().append(resultView);
+    //   },
+    //   error:function(error){
+    //     layer.msg(error.message, {icon: 2});
+    //   }
+    // })
+  })
+
+  $(document).on("click",".btn-delete",function(){
+      var that = this;
+      //询问框
+      layer.confirm('确定要删除这个项目吗？', {
+          btn: ['删除','取消'] //按钮
+      }, function(){
+//            layer.msg('的确很重要', {icon: 1});
+          var id = $(that).parent().attr("data-id");
+          var data = {id:id};
+          var url = "/api/delete";
+          var type = "GET";
+          sendQuery(url,type,data,{
+              success:function(result){
+                  //获取当前项目名称
+                  var data = result.data;
+                  layer.msg('删除成功', {icon: 1});
+                  window.location.reload();
+              },
+              error:function(error){
+                  layer.msg(error.message, {icon: 2});
+              }
+          })
+      }, function(){
+
+      });
+
+      $(".layui-layer-btn").css({
+          "font-size":"15px"
+      })
+      $(".layui-layer-msg").css({
+          "width":"180px;"
+      })
+  })
+
+  $(document).on("click",".btn-edit",function(){
+      //获取id
+      var id = $(this).parent().attr("data-id");
+      //遍历
+      if(id){
+//          window.location.href = "/app?appid="+id;
+          for(var i = 0; i < apiList.length;i++){
+            for(var j = 0; j < apiList[i].api.length;j++){
+              if(apiList[i].api[j].objectId == id){
+                  // $("#app_id").val(id);
+                  // $("#edit_app_name").val(appList[i].app_name);
+                  // $("#edit_app_desc").val(appList[i].app_desc);
+
+                  //设置id
+                  $("#api-id").val(id);
+
+                  //设置为更改
+                  $(".create").text("更改");
+
+                  //获取api名称
+                  var api_name = apiList[i].api[j].api_name;
+                  $("#api-name").val(api_name);
+
+                  //获取API所属类别
+                  var api_type = apiList[i].api[j].api_type;
+                  $("#api-type").val(api_type);
+
+                  //描述:
+                  var api_desc = apiList[i].api[j].api_desc;
+                  $("#api-desc").val(api_desc);
+
+                  //URI:
+                  var api_url = apiList[i].api[j].api_url;
+                  $("#api-url").val(api_url);
+
+                  //HTTP请求方式
+                  var api_request = apiList[i].api[j].api_request;
+                  $("#api-request").text(api_request);  
+
+                  //调用示例
+                  // var api_demo = apiList[i].api[j].api_demo;
+                  // $("#api-demo").val(api_demo);    
+
+                  var api_para = apiList[i].api[j].api_para;
+                  console.log(api_para);
+                  if(api_para.length){
+                    $(".parameter-list").empty();
+                  }
+                  for(var k = 0; k < api_para.length; k++){
+                    var li = '<div class="parameter-li mt-20">'+
+                              '<input type="text" class="para-name"  style="width:150px;margin-right: 6px" placeholder="参数名" value="'+api_para[k].para_name+'">'+
+                              '<input type="text" class="para-type"  style="width:150px;margin-right: 6px" placeholder="参数类型" value="'+api_para[k].para_type+'">'+
+                              '<input type="text" class="para-desc"  style="width:150px;margin-right: 6px" placeholder="参数描述" value="'+api_para[k].para_desc+'">'+
+                              '<input type="text" class="para-remark"  style="width:150px;margin-right: 6px" placeholder="参数示例值" value="'+api_para[k].para_remark+'">'+
+                              '<div class="check">'+
+                              '<input type="checkbox" class="para-must" '+(api_para[k].para_must ? "checked":"")+'>'+
+                              '<label for="input-1">必须参数</label>'+
+                              '</div>'+
+                              '<div class="iconfont icon-x"></div>'+
+                              '</div>';
+                      console.log(li);
+                      $(".parameter-list").append(li);
+                      $('.check input').iCheck({
+                          checkboxClass: 'icheckbox_square-blue',
+                          radioClass: 'iradio-blue'
+                      });
+                  }   
+              }
+            }   
+          }
+          $(".sec-content").hide();
+          $("#apimanage_add").show();
+      }
+  })
+
+  //提交表单
+  // $(document).on("click","#create",function(){
+  //   //获取所有表单数据
+  //   var data = $("#form").serializeArray();
+  //   var url = "/app/create";
+  //   var type = "GET"; 
+  //   sendQuery(url,type,data,{
+  //     success:function(result){
+  //       console.log(result);
+  //       var data = result.data;
+  //       alert("创建成功");
+  //       window.location.reload();
+  //     },
+  //     error:function(error){
+  //       alert(error.message);
+  //       console.log(error);
+  //     }
+  //   })
+  // })
+</script>
+</html>

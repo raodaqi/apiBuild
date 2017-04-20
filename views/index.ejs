@@ -1,0 +1,201 @@
+<% include header.ejs %>
+<link href='/css/index.css', rel='stylesheet', type='text/css'>
+<style>
+</style>
+<body>
+  <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
+    <div class="navbar-header page-scroll">
+      <div class="logo">APIMANAGE</div>
+      <div class="icon">
+        <a href="#intro">平台介绍</a>
+        <a href="#about">联系我们</a>
+      </div>
+    </div>
+  </nav>
+  <div class="content">
+    <div class="row api-content">
+      <div class="app-content">
+      </div>
+    </div>
+    <button type="button" class="btn btn-default create ml-30" data-toggle="modal" data-target="#myModal">创建项目</button>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <form action="" id="form">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="myModalLabel">创建项目</h4>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="exampleInputEmail1">新项目名称</label>
+                <input type="text" class="form-control" name="app_name" id="appname">
+              </div>
+              <div class="form-group">
+                <label for="exampleInputEmail1">项目描述</label>
+                <textarea class="form-control" rows="3" name="app_desc" id="appdesc"></textarea>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+              <button type="button" class="btn btn-primary" id="create">创建</button>
+            </div>
+          </div>
+        </div>
+      </form>
+  </div>
+
+  <!-- editModal -->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel">
+      <form action="" id="editForm">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <h4 class="modal-title" id="myModalLabel">编辑项目</h4>
+                  </div>
+                  <div class="modal-body">
+                      <input type="hidden" name="app_id" id="app_id">
+                      <div class="form-group">
+                          <label for="exampleInputEmail1">项目名称</label>
+                          <input type="text" class="form-control" name="edit_app_name" id="edit_app_name">
+                      </div>
+                      <div class="form-group">
+                          <label for="exampleInputEmail1">项目描述</label>
+                          <textarea class="form-control" rows="3" name="edit_app_desc" id="edit_app_desc"></textarea>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button type="button" class="btn btn-primary" id="edit">更改</button>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </div>
+<% include footer.ejs %>
+<script>
+    $(document).on("click",".icon-delete",function(){
+        var that = this;
+        //询问框
+        layer.confirm('确定要删除这个项目吗？', {
+            btn: ['删除','取消'] //按钮
+        }, function(){
+//            layer.msg('的确很重要', {icon: 1});
+            var id = $(that).parent().children(".api-item-meta").attr("data-id");
+            var data = {id:id};
+            var url = "/app/delete";
+            var type = "GET";
+            sendQuery(url,type,data,{
+                success:function(result){
+                    //获取当前项目名称
+                    var data = result.data;
+                    layer.msg('删除成功', {icon: 1});
+                    $(that).parent().remove();
+                },
+                error:function(error){
+                    layer.msg(error.message, {icon: 2});
+                }
+            })
+        }, function(){
+
+        });
+
+        $(".layui-layer-btn").css({
+            "font-size":"15px"
+        })
+        $(".layui-layer-msg").css({
+            "width":"180px;"
+        })
+    })
+
+  //提交表单
+  $(document).on("click","#create",function(){
+    //获取所有表单数据
+    var data = $("#form").serializeArray();
+    var url = "/app/create";
+    var type = "GET"; 
+    sendQuery(url,type,data,{
+      success:function(result){
+        console.log(result);
+        var data = result.data;
+        layer.msg('创建成功', {icon: 1});
+        window.location.reload();
+      },
+      error:function(error){
+          layer.msg(error.message, {icon: 2});
+      }
+    })
+  })
+    //提交表单
+    $(document).on("click","#edit",function(){
+        //获取所有表单数据
+        var data = $("#editForm").serializeArray();
+        var url = "/app/edit";
+        var type = "POST";
+        sendQuery(url,type,data,{
+            success:function(result){
+                console.log(result);
+                var data = result.data;
+                layer.msg('更改成功', {icon: 1});
+                window.location.reload();
+            },
+            error:function(error){
+                layer.msg(error.message, {icon: 2});
+            }
+        })
+    })
+
+  var appList = [];
+
+  $(function(){
+    //获取项目列表
+    var data = {};
+    var url = "/app/list";
+    var type = "GET"; 
+    sendQuery(url,type,data,{
+      success:function(result){
+        console.log(result);
+        var data = result.data;
+        var list = '';
+        for(var i = 0; i < data.length; i++){
+          list+='<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><div class="api-item"><div class="api-item-meta" data-id="'+data[i].objectId+'">'+data[i].app_name+'</div><i class="iconfont icon-set"></i><i class="iconfont icon-delete"></i></div></div>';
+        }
+        $(".app-content").empty().append(list);
+        appList = result.data;
+      },
+      error:function(error){
+        alert(error.message);
+        console.log(error);
+      }
+    })
+  })
+
+  //点击项目名称进入项目
+  $(document).on("click",".api-item-meta",function(){
+    var id = $(this).attr("data-id");
+    if(id){
+      window.location.href = "/app?appid="+id;
+    }
+  })
+
+  //点击设置按钮逻辑
+  $(document).on("click",".icon-set",function(){
+      var id = $(this).prev().attr("data-id");
+      if(id){
+//          window.location.href = "/app?appid="+id;
+          for(var i = 0; i < appList.length;i++){
+              if(appList[i].objectId == id){
+                  $("#app_id").val(id);
+                  $("#edit_app_name").val(appList[i].app_name);
+                  $("#edit_app_desc").val(appList[i].app_desc);
+              }
+          }
+          $('#editModal').modal();
+      }
+  })
+</script>
+</html>
