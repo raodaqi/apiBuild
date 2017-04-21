@@ -97,15 +97,16 @@ body {
 
 .api-content {
     margin-left: 16.666666666666664%;
-    width: 75%;
+    /*width: 75%;*/
+    width: 80%;
 }
 
 .menu {
     margin: 40px 0 40px 20px;
     padding: 0;
     list-style: none;
-    position: fixed;
-    overflow: hidden;
+    /*position: fixed;*/
+    /*overflow: hidden;*/
 }
 
 .menu-li {
@@ -340,3 +341,11 @@ li img {
 .color-o{
     color: #ff9800;
 }
+
+
+.api-result .layui-layer-content,.menu .layui-layer-content{
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
+  }

@@ -1,20 +1,27 @@
 <% include header.ejs %>
 <link href='/css/index.css', rel='stylesheet', type='text/css'>
 <style>
+  .app-content .layui-layer-content{
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
+  }
 </style>
 <body>
   <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
     <div class="navbar-header page-scroll">
-      <div class="logo">APIMANAGE</div>
-      <div class="icon">
+      <div class="logo">APIBUILD</div>
+      <!-- <div class="icon">
         <a href="#intro">平台介绍</a>
         <a href="#about">联系我们</a>
-      </div>
+      </div> -->
     </div>
   </nav>
   <div class="content">
     <div class="row api-content">
       <div class="app-content">
+        <div id="" class="layui-layer-content layui-layer-loading0"></div></div>
       </div>
     </div>
     <button type="button" class="btn btn-default create ml-30" data-toggle="modal" data-target="#myModal">创建项目</button>
@@ -61,7 +68,7 @@
                       <input type="hidden" name="app_id" id="app_id">
                       <div class="form-group">
                           <label for="exampleInputEmail1">项目名称</label>
-                          <input type="text" class="form-control" name="edit_app_name" id="edit_app_name">
+                          <input type="text" class="form-control" name="edit_app_name" id="edit_app_name" disabled="true">
                       </div>
                       <div class="form-group">
                           <label for="exampleInputEmail1">项目描述</label>

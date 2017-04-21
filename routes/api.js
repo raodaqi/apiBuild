@@ -3,6 +3,7 @@ var router = require('express').Router();
 var AV = require('leanengine');
 var charset = require('superagent-charset');
 var superagent = require('superagent');
+var LCT = require('./lctbuild');
 charset(superagent);
 
 var fs = require('fs');
@@ -275,7 +276,6 @@ router.get('/link', function(req, res, next) {
 });
 
 
-
 var API = AV.Object.extend('API');
 // 查询 Todo 列表
 router.get('/', function(req, res, next) {
@@ -372,57 +372,16 @@ router.get('/get_api_result', function(req, res, next) {
     });
 })
 
+
 // 查询 Todo 列表
 router.get('/add', function(req, res, next) {
     //获取当前的appid
 //    var appid = req.query.appid;
     var data = {
-        app_id       : "appid不能为空",
-        api_name    : "API名称不能为空",
-        api_type    : "API所属类别不能为空",
-        api_desc    : "",
-        api_url     : "APIURI不能为空",
-        api_request : "API请求方式不能为空",
-        api_para    : "",
-        api_demo    : ""
-    }
-    var data = validate(res,req,"GET",data);
-    if(!data){
-        return;
-    }
-    // console.log(data);
-    var api = new API();
-    for(var i in data){
-        api.set(i,data[i]);
-    }
-    api.save().then(function (api) {
-        var result = {
-            code : 200,
-            data : api,
-            message : "success"
-        }
-        res.send(result);
-    }, function (error) {
-        var result = {
-            code : 500,
-            message : "保存出错"
-        }
-        res.send(result);
-    });
-});
-
-router.get('/addbynode', function(req, res, next) {
-    //获取当前的appid
-//    var appid = req.query.appid;
-    var data = {
-        app_id      : "appid不能为空",
-        api_name    : "API名称不能为空",
-        api_type    : "API所属类别不能为空",
-        api_desc    : "",
-        api_url     : "APIURI不能为空",
-        api_request : "API请求方式不能为空",
-        api_para    : "",
-        api_demo    : ""
+        app_id        : "appid不能为空",
+        table_name    : "表名称不能为空",
+        table_desc    : "",
+        table_para    : ""
     }
     var data = validate(res,req,"GET",data);
     if(!data){
@@ -431,7 +390,88 @@ router.get('/addbynode', function(req, res, next) {
 
     var query = new AV.Query(API);
     query.equalTo("app_id",data.app_id);
-    query.equalTo("api_name",data.api_name);
+    query.equalTo('table_name',data.table_name);
+    query.find().then(function(results) {
+        //判断是否存在
+        if(results.length){
+            //存在
+            var result = {
+                code : 601,
+                message : '表名已存在'
+            }
+            res.send(result);
+        }else{
+            var api = new API();
+            for(var i in data){
+                api.set(i,data[i]);
+            }
+            api.save().then(function (api) {
+                // var result = {
+                //     code : 200,
+                //     data : api,
+                //     message : "success"
+                // }
+                // res.send(result);
+                console.log(LCT);
+                var lct = new LCT({
+                    para:data.table_para,
+                    name:data.table_name,
+                    res : res
+                })
+                lct.build();
+
+            }, function (error) {
+                var result = {
+                    code : 500,
+                    message : "保存出错"
+                }
+                res.send(result);
+            });
+        }
+    }, function(err) {
+        if (err.code === 101) {
+            //判断是否存在
+            var api = new API();
+            for(var i in data){
+                api.set(i,data[i]);
+            }
+            api.save().then(function (api) {
+                var result = {
+                    code : 200,
+                    data : api,
+                    message : "success"
+                }
+                res.send(result);
+            }, function (error) {
+                var result = {
+                    code : 500,
+                    message : "保存出错"
+                }
+                res.send(result);
+            });
+        } else {
+            next(err);
+        }
+    }).catch(next);
+});
+
+router.get('/addbynode', function(req, res, next) {
+    //获取当前的appid
+//    var appid = req.query.appid;
+    var data = {
+        app_id        : "appid不能为空",
+        table_name    : "表名称不能为空",
+        table_desc    : "",
+        table_para    : ""
+    }
+    var data = validate(res,req,"GET",data);
+    if(!data){
+        return;
+    }
+
+    var query = new AV.Query(API);
+    query.equalTo("app_id",data.app_id);
+    query.equalTo("api_name",data.table_name);
     query.find().then(function (result) {
         if(result.length){
             // 存在
@@ -488,32 +528,34 @@ router.get('/edit', function(req, res, next) {
     //获取当前的appid
 //    var appid = req.query.appid;
     var data = {
-        api_id      : "api_id不能为空",   
-        app_id      : "appid不能为空",
-        api_name    : "API名称不能为空",
-        api_type    : "API所属类别不能为空",
-        api_desc    : "",
-        api_url     : "APIURI不能为空",
-        api_request : "API请求方式不能为空",
-        api_para    : "",
-        api_demo    : ""
+        table_id      : "table_id不能为空",   
+        app_id        : "appid不能为空",
+        table_name    : "表名称不能为空",
+        table_desc    : "",
+        table_para    : ""
     }
     var data = validate(res,req,"GET",data);
     if(!data){
         return;
     }
     // console.log(data);
-    var api = AV.Object.createWithoutData('API', data.api_id);
+    var api = AV.Object.createWithoutData('API', data.table_id);
     for(var i in data){
         api.set(i,data[i]);
     }
     api.save().then(function (api) {
-        var result = {
-            code : 200,
-            data : api,
-            message : "success"
-        }
-        res.send(result);
+        // var result = {
+        //     code : 200,
+        //     data : api,
+        //     message : "success"
+        // }
+        // res.send(result);
+        var lct = new LCT({
+            para:data.table_para,
+            name:data.table_name,
+            res : res
+        })
+        lct.build();
     }, function (error) {
         var result = {
             code : 500,
@@ -539,41 +581,27 @@ router.get('/list', function(req, res, next) {
     for(var i in data){
         query.equalTo(i,data[i]);
     }
-    query.find().then(function (apiList) {
-        var dataArray = [];
-        var apiJson = {};
-        var apiData = [];
-        for(var i = 0; i < apiList.length;i++){
-            // console.log(apiList[i].attributes.api_type);
-            var api_type = apiList[i].attributes.api_type;
-            if(api_type){
-                for(var j = 0; j <= dataArray.length;j++){
-                    if(dataArray[j] && dataArray[j].api_type == api_type){
-                        apiList[i].set('api_para', JSON.parse(apiList[i].attributes.api_para));
-                        dataArray[j].api.push(apiList[i]);
-                        break;
-                    }
-                    if(j == dataArray.length){
-                        dataArray[j] = {
-                            api_type : api_type,
-                            api : []
-                        }
-                        apiList[i].set('api_para', JSON.parse(apiList[i].attributes.api_para));
-                        dataArray[j].api.push(apiList[i]);
-                        break;
-                    }
-                }
-            }
+    query.find().then(function (result) {
+        for(var i = 0; i < result.length; i++){
+            result[i].set("table_para",JSON.parse(result[i].attributes.table_para));
         }
-        // console.log(dataArray);
 
         var result = {
             code : 200,
-            data : dataArray,
-            message : "success"
+            data : result,
+            message : "获取成功"
         }
         res.send(result);
     }, function (error) {
+        if(error.code == 101){
+            var result = {
+                code : 200,
+                data : [],
+                message : "success"
+            }
+            res.send(result);
+            return;
+        }
         var result = {
             code : 500,
             message : "保存出错"

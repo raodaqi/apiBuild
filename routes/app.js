@@ -5,9 +5,10 @@ var AV = require('leanengine');
 var fs = require("fs");
 var buf = new Buffer(1024*1024);
 
+function doo(res){
 // 异步打开文件
 console.log("准备打开文件！");
-fs.open('routes/test.js', 'r+', function(err, fd) {
+fs.open('app.js', 'r+', function(err, fd) {
    if (err) {
        return console.error(err);
    }
@@ -22,7 +23,16 @@ fs.open('routes/test.js', 'r+', function(err, fd) {
       
       // 仅输出读取的字节
       if(bytes > 0){
-         console.log(buf.slice(0, bytes).toString());
+         // console.log(buf.slice(0, bytes).toString());
+        var filetext = buf.slice(0, bytes).toString();
+        console.log(filetext);
+        filetext = filetext.replace("module.exports = app;","console.log('123');\nmodule.exports = app;")
+        fs.writeFile('app.js',filetext,  function(err) {
+           if (err) {
+               return console.error(err);
+           }
+           res.send("生成成功123");
+        });
       }
       
       // 关闭文件
@@ -34,6 +44,12 @@ fs.open('routes/test.js', 'r+', function(err, fd) {
       });
    });
 });
+}
+
+
+router.get('/do', function(req, res, next) {
+  doo(res);
+})
 
 
 function sendError(res,code,message){
@@ -70,6 +86,16 @@ function validate(res,req,type,data){
 }
 
 var APP = AV.Object.extend('APP');
+
+// //动态生成初始化
+// var query = new AV.Query(APP);
+// query.find().then(function(results) {
+
+// }, function(err) {
+//   //保存一次
+//   var App = new APP();
+//   App.save().then(function (app) {});
+// });
 
 // 查询 Todo 列表
 router.get('/', function(req, res, next) {
@@ -120,7 +146,26 @@ router.get('/create', function(req, res, next) {
     	}
   	}, function(err) {
     	if (err.code === 101) {
-			res.send(err);
+			  // res.send(err);
+        //没有创建class
+        //创建应用
+        var App = new APP();
+        App.set("app_name",app_name);
+        App.set("app_desc",app_desc);
+        App.save().then(function (app) {
+          var result = {
+            code : 200,
+            data : app,
+            message : "success"
+          }
+          res.send(result);
+        }, function (error) {
+            var result = {
+              code : 500,
+              message : "保存出错"
+            }
+            res.send(result);
+        }); 
 	    } else {
 	      next(err);
 	    }
@@ -131,7 +176,6 @@ router.get('/create', function(req, res, next) {
 router.post('/edit', function(req, res, next) {
     var data = {
         app_id            : "appid不能为空",
-        edit_app_name     : "项目名称不能为空",
         edit_app_desc     : ""
     }
     var data = validate(res,req,"GET",data);
@@ -140,7 +184,6 @@ router.post('/edit', function(req, res, next) {
     }
 
     var app = AV.Object.createWithoutData('APP', data.app_id);
-    app.set("app_name",data.edit_app_name);
     app.set("app_desc",data.edit_app_desc);
     app.save().then(function (app) {
         var result = {
@@ -179,7 +222,13 @@ router.get('/list', function(req, res, next) {
 		res.send(result);
   	}, function(err) {
     	if (err.code === 101) {
-			res.send(err);
+      //判断是否存在
+        var result = {
+            code : 200,
+            data : [],
+            message : "success"
+        }
+        res.send(result);
 	    } else {
 	      next(err);
 	    }
@@ -205,7 +254,15 @@ router.get('/detail', function(req, res, next) {
         res.send(result);
     }, function(err) {
         if (err.code === 101) {
-            res.send(err);
+            // res.send(err);
+            //没有创建class
+            //判断是否存在
+            var result = {
+                code : 200,
+                data : [],
+                message : "success"
+            }
+            res.send(result);
         } else {
             next(err);
         }

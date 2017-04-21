@@ -608,5 +608,4 @@ router.get('/delete', function(req, res, next) {
         res.send(error);
     });
 });
-
 module.exports = router;
