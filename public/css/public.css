@@ -17,6 +17,7 @@ body {
     color: #4f535f;
     background-color: #fff;
     -webkit-overflow-scrolling: touch;
+    overflow-x: hidden;
 }
 i {
     display: block;
@@ -139,4 +140,21 @@ button,a,.modal{
 
 .size-16{
   font-size: 16px;
+}
+
+.help-block {
+    display: block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    color: #259eff;
+    font-size: 14px;
+}
+
+.error.help-block{
+  color: red;
+}
+
+.form-control.error,.error{
+  color: red;
+  border-color:red;
 }

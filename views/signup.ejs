@@ -1,0 +1,64 @@
+<% include header.ejs %>
+<link href='/css/index.css', rel='stylesheet', type='text/css'>
+<style>
+  .app-content .layui-layer-content{
+    width: 60px;
+    height: 24px;
+    background: url(/layer/skin/default/loading-0.gif) no-repeat;
+    margin: 30px auto;
+  }
+</style>
+<body>
+  <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
+    <div class="navbar-header page-scroll">
+      <div class="logo">APIBUILD</div>
+      <div class="icon">
+        <a href="login">登录</a>
+        <a href="signup">注册</a>
+      </div>
+    </div>
+  </nav>
+  <div class="content">
+    <div class="login-content">
+      <form id="form">
+        <div class="form-group">
+          <label for="exampleInputName1">用户名</label>
+          <input type="name" name="name" class="form-control" id="exampleInputName1">
+        </div>
+        <div class="form-group">
+          <label for="exampleInputEmail1">邮箱</label>
+          <input type="email" name="email" class="form-control" id="exampleInputEmail1" >
+        </div>
+        <div class="form-group">
+          <label for="exampleInputPassword1">密码</label>
+          <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+        </div>
+      </form>
+      <button class="btn btn-default signup">注册</button>
+    </div>
+  </div>
+<% include footer.ejs %>
+<script>
+
+  //提交表单
+  $(document).on("click",".signup",function(){
+    //获取所有表单数据
+    var data = $("#form").serializeArray();
+    var url = "/user/signup";
+    var type = "POST"; 
+    sendQuery(url,type,data,{
+      success:function(result){
+        console.log(result);
+        var data = result.data;
+        layer.msg('注册成功', {icon: 1});
+        setTimeout(function(){
+            location.href = "/";
+        }, 500);
+      },
+      error:function(error){
+          layer.msg(error.message, {icon: 2});
+      }
+    })
+  })
+</script>
+</html>

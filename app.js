@@ -5,6 +5,14 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var AV = require('leanengine');
+var LCT = require('lc-build');
+var LCT = new LCT({
+  path:"routes/user.js"
+})
+// LCT.buildUser();
+
+
+
 
 // 加载云函数定义，你可以将云函数拆分到多个文件方便管理，但需要在主文件中加载它们
 require('./cloud');
@@ -45,13 +53,43 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.get('/', function(req, res) {
-  res.render('index', { currentTime: new Date() });
+  var currentUser = AV.User.current();
+  if(currentUser){
+    console.log(currentUser["id"]);
+  }
+  
+  res.render('index', { user: currentUser});
+});
+
+app.get('/login', function(req, res) {
+  var currentUser = AV.User.current();
+  if (currentUser) {
+      // 跳转到首页
+      res.redirect("/");
+  }
+  else {
+    //currentUser 为空时，可打开用户注册界面…
+    res.render('login');
+  }
+});
+
+app.get('/signup', function(req, res) {
+  var currentUser = AV.User.current();
+  if (currentUser) {
+      // 跳转到首页
+      res.redirect("/");
+  }
+  else {
+    //currentUser 为空时，可打开用户注册界面…
+    res.render('signup');
+  }
 });
 
 // 可以将一类的路由单独保存在一个文件中
 app.use('/todos', require('./routes/todos'));
 app.use('/app', require('./routes/app'));
 app.use('/api', require('./routes/api'));
+app.use('/user', require('./routes/user'));
 
 //用户添加路由
 app.use('/test_snake', require('./routes/test_snake'));

@@ -388,6 +388,18 @@ router.get('/add', function(req, res, next) {
         return;
     }
 
+    //判断名字是否符合格式
+    var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
+      if(!patt1.test(data.table_name)){
+        var result = {
+          code    : 402,
+          message : "表名格式出错",
+          data    : []
+        }
+        res.send(result);
+        return;
+    }
+
     var query = new AV.Query(API);
     query.equalTo("app_id",data.app_id);
     query.equalTo('table_name',data.table_name);

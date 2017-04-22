@@ -7,15 +7,45 @@
     background: url(/layer/skin/default/loading-0.gif) no-repeat;
     margin: 30px auto;
   }
+  .icon .caret{
+    border-top: 6px solid;
+    border-right: 6px solid transparent;
+    border-left: 6px solid transparent;
+    margin-left: 5px;
+  }
+  .user-block{
+    position: relative;
+    width: 130px;
+    float: right;
+  }
+  .dropdown-menu{
+    min-width: 100px;
+    margin-left: 20px;
+  }
+  .dropdown-menu.active{
+    display: block;
+  }
+  .dropdown-menu a{
+    margin-left: 0;
+  }
 </style>
 <body>
   <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
     <div class="navbar-header page-scroll">
       <div class="logo">APIBUILD</div>
-      <!-- <div class="icon">
-        <a href="#intro">平台介绍</a>
-        <a href="#about">联系我们</a>
-      </div> -->
+      <div class="icon">
+        <% if(!user){ %>
+          <a href="login">登录</a>
+          <a href="signup">注册</a>
+        <% }else{ %>
+          <div class="user-block">
+            <a><%=user.attributes.name%><span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a class="logout">退出登录</a></li>
+            </ul>
+          </div>    
+        <% } %>
+      </div>
     </div>
   </nav>
   <div class="content">
@@ -40,6 +70,7 @@
               <div class="form-group">
                 <label for="exampleInputEmail1">新项目名称</label>
                 <input type="text" class="form-control" name="app_name" id="appname">
+                <div class="help-block">只能包含字母、数字、下划线，必须以字母开头</div>
               </div>
               <div class="form-group">
                 <label for="exampleInputEmail1">项目描述</label>
@@ -69,6 +100,8 @@
                       <div class="form-group">
                           <label for="exampleInputEmail1">项目名称</label>
                           <input type="text" class="form-control" name="edit_app_name" id="edit_app_name" disabled="true">
+
+                          <div class="help-block">只能包含字母、数字、下划线，必须以字母开头</div>
                       </div>
                       <div class="form-group">
                           <label for="exampleInputEmail1">项目描述</label>
@@ -101,7 +134,7 @@
                     //获取当前项目名称
                     var data = result.data;
                     layer.msg('删除成功', {icon: 1});
-                    $(that).parent().remove();
+                    $(that).parent().parent().remove();
                 },
                 error:function(error){
                     layer.msg(error.message, {icon: 2});
@@ -119,10 +152,58 @@
         })
     })
 
+    $(".user-block a").on("click",function(){
+      if($(".dropdown-menu").hasClass("active")){
+        $(".dropdown-menu").removeClass("active")
+      }else{
+        $(".dropdown-menu").addClass("active")
+      }
+    })
+
+    //登出
+    $(".logout").on("click",function(){
+      var data ={};
+      var url = "/user/logout";
+      var type = "GET"; 
+      sendQuery(url,type,data,{
+        success:function(result){
+          console.log(result);
+          var data = result.data;
+          layer.msg('登出成功', {icon: 1});
+          window.location.reload();
+        },
+        error:function(error){
+            layer.msg(error.message, {icon: 2});
+        }
+      })
+    })
+
+  $("input[name='app_name']").on("input change",function(){
+    var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
+    //判断项目名称是否正确
+    if(!patt1.test($(this).val())){
+      $(".help-block").addClass("error");
+      $("input[name='app_name']").addClass("error");
+      return;
+    }else{
+      $(".help-block").removeClass("error");
+      $(this).removeClass("error");
+    }
+  })
+
   //提交表单
   $(document).on("click","#create",function(){
     //获取所有表单数据
     var data = $("#form").serializeArray();
+
+    var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
+    //判断项目名称是否正确
+    if(!patt1.test($("input[name='app_name']").val())){
+      $(".help-block").addClass("error");
+      $("input[name='app_name']").addClass("error");
+      return;
+    }
+
     var url = "/app/create";
     var type = "GET"; 
     sendQuery(url,type,data,{
@@ -159,6 +240,7 @@
   var appList = [];
 
   $(function(){
+
     //获取项目列表
     var data = {};
     var url = "/app/list";
@@ -169,7 +251,7 @@
         var data = result.data;
         var list = '';
         for(var i = 0; i < data.length; i++){
-          list+='<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><div class="api-item"><div class="api-item-meta" data-id="'+data[i].objectId+'">'+data[i].app_name+'</div><i class="iconfont icon-set"></i><i class="iconfont icon-delete"></i></div></div>';
+          list+='<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12"><div class="api-item"><div class="api-item-meta" data-id="'+data[i].objectId+'"><span>'+data[i].app_name+'</span><div class="app-type">'+(data[i].type=="private"? "private" : "") +'</div></div><i class="iconfont icon-set"></i><i class="iconfont icon-delete"></i></div></div>';
         }
         $(".app-content").empty().append(list);
         appList = result.data;

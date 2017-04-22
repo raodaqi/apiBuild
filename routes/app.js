@@ -108,15 +108,35 @@ router.get('/create', function(req, res, next) {
 	var app_name = req.query.app_name;
 	var app_desc = req.query.app_desc;
 
-  	var query = new AV.Query(APP);
-  	//去除空格
-  	app_name = app_name.replace(/(^\s+)|(\s+$)/g,"");
-  	app_name = app_name.replace(/\s/g,"");
-  	query.equalTo('app_name',app_name);
+  //获取当前用户
+  var currentUser = AV.User.current();
 
-  	query.find().then(function(results) {
-    	//判断是否存在
-    	if(results.length){
+  var query = new AV.Query(APP);
+  //去除空格
+  app_name = app_name.replace(/(^\s+)|(\s+$)/g,"");
+  app_name = app_name.replace(/\s/g,"");
+
+  //将name的首字母设置为小写
+  app_name = app_name.slice(0, 1).toLowerCase()+app_name.slice(1);
+
+  //判断名字是否符合格式
+  var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
+  if(!patt1.test(app_name)){
+    var result = {
+      code    : 402,
+      message : "项目名称格式出错",
+      data    : []
+    }
+    res.send(result);
+    return;
+  }
+
+
+  query.equalTo('app_name',app_name);
+
+  query.find().then(function(results) {
+    //判断是否存在
+    if(results.length){
     		//存在
     		var result = {
 			   	code : 601,
@@ -129,6 +149,17 @@ router.get('/create', function(req, res, next) {
     		var App = new APP();
     		App.set("app_name",app_name);
     		App.set("app_desc",app_desc);
+
+        if(currentUser){
+          //私有用户
+          App.set("author",currentUser.id);
+          App.set("type","private");
+        }else{
+          //共有用户
+          App.set("author","");
+          App.set("type","public");
+        }
+
     		App.save().then(function (app) {
 			    var result = {
 			    	code : 200,
@@ -152,6 +183,17 @@ router.get('/create', function(req, res, next) {
         var App = new APP();
         App.set("app_name",app_name);
         App.set("app_desc",app_desc);
+
+        if(currentUser){
+          //私有用户
+          App.set("author",currentUser.id);
+          App.set("type","private");
+        }else{
+          //共有用户
+          App.set("author","");
+          App.set("type","public");
+        }
+
         App.save().then(function (app) {
           var result = {
             code : 200,
@@ -183,8 +225,19 @@ router.post('/edit', function(req, res, next) {
         return;
     }
 
+    //获取当前用户
+    var currentUser = AV.User.current();
+
     var app = AV.Object.createWithoutData('APP', data.app_id);
     app.set("app_desc",data.edit_app_desc);
+
+    // if(currentUser){
+    //   //私有用户
+    //   app.set("type","private");
+    // }else{
+    //   app.set("type","public");
+    // }
+
     app.save().then(function (app) {
         var result = {
             code : 200,
@@ -207,10 +260,23 @@ router.get('/list', function(req, res, next) {
     //获取当前链接
     // console.log(req.baseUrl+req.path);
     //判断是什么请求方式
-    console.log(req.method);
+    // console.log(req.method);
+    //获取当前用户
+    var currentUser = AV.User.current();
 
   	var query = new AV.Query(APP);
   	query.descending('createdAt');
+    //将私有和公有的方法
+
+    if(currentUser){
+      query.equalTo("type","public");
+      var privateQuery = new AV.Query(APP);
+      privateQuery.equalTo("author",currentUser.id);
+      var query = AV.Query.or(query, privateQuery);
+    }else{
+      query.equalTo("type","public");
+    }
+
   	query.find().then(function(results) {
 //    	console.log(results);
     	//判断是否存在

@@ -79,6 +79,7 @@
                 <p>表名:</p>
                 <div class="code-content">
                     <input type="text" name="table_name" id="table-name" placeholder="获取XX信息">
+                    <div class="help-block">只能包含字母、数字、下划线，必须以字母开头</div>
                 </div>
                 <p>描述:</p>
                 <div class="code-content">
@@ -132,6 +133,19 @@
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio-blue'
         });
+  })
+
+  $("input[name='table_name']").on("input change",function(){
+    var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
+    //判断项目名称是否正确
+    if(!patt1.test($(this).val())){
+      $(".help-block").addClass("error");
+      $(this).addClass("error");
+      return;
+    }else{
+      $(".help-block").removeClass("error");
+      $(this).removeClass("error");
+    }
   })
 
   $(document).on("click",".icon-x",function(){
@@ -188,6 +202,17 @@
               table_para.push(table_para_li);
           }
       })
+
+      var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
+      //判断项目名称是否正确
+      if(!patt1.test($(this).val())){
+        $(".help-block").addClass("error");
+        $(this).addClass("error");
+        return;
+      }else{
+        $(".help-block").removeClass("error");
+        $(this).removeClass("error");
+      }
 
       var data = {
           table_id      : table_id,
