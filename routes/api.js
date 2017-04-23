@@ -7,6 +7,7 @@ var LCT = require('./lctbuild');
 charset(superagent);
 
 var fs = require('fs');
+var buf = new Buffer(1024*1024);
 
 router.get('/down', function(req, res, next) {
     //获取当前的app_id
@@ -630,23 +631,131 @@ router.get('/delete', function(req, res, next) {
         id   : "api的id不能为空"
     }
     var data = validate(res,req,"GET",data);
-    if(!data){
+    if(!data){ 
         return;
     }
-    var api = AV.Object.createWithoutData('API', data.id);
-    api.destroy().then(function (success) {
-        // 删除成功
-        //判断是否存在
+
+    //判断是否存在该id
+    var query = new AV.Query('API');
+    query.get(data.id).then(function (api) {
+        // 成功获得实例
+        // console.log(api);
+        if(api){
+            // 获取当前生成的文件名称
+            var table_name = api.attributes.table_name;
+            //删除数据
+            api.destroy().then(function (success) {
+                // 删除数据成功
+                //需要先将app.js里的引用给删除了
+                fs.open('app.js', 'r+', function(err, fd) {
+                   if (err) {
+                       return console.error(err);
+                   }
+                   fs.read(fd, buf, 0, buf.length, 0, function(err, bytes){
+                      if (err){
+                         console.log(err);
+                      }
+                      // 仅输出读取的字节
+                      if(bytes > 0){
+                        var filetext = buf.slice(0, bytes).toString();
+                        filetext = filetext.replace("app.use('/"+table_name+"', require('./routes/"+table_name+"'));\n","");
+                        fs.writeFile('app.js',filetext,  function(err) {
+                           if (err) {
+                               return console.error(err);
+                           }
+                           //删除文件
+                            fs.unlink("routes/"+table_name+".js", function(err){ 
+                                if(!err){
+                                    //清空数据
+                                    console.log(table_name);
+                                    var tableName = table_name.slice(0, 1).toUpperCase()+table_name.slice(1);
+                                    var query = new AV.Query(tableName);
+                                    query.find().then(function (results) {
+                                        // 如果这样写，第二个条件将覆盖第一个条件，查询只会返回 priority = 1 的结果
+                                        // 批量删除
+                                        AV.Object.destroyAll(results).then(function () {
+                                            // 成功
+                                            var result = {
+                                                code : 200,
+                                                data : [],
+                                                message : "删除成功"
+                                            }
+                                            res.send(result);
+                                        }, function (error) {
+                                            // 异常处理
+                                            var result = {
+                                                code : 401,
+                                                data : [],
+                                                message : "删除失败"
+                                            }
+                                            res.send(result);
+                                        });
+                                    }, function (error) {
+                                        var result = {
+                                            code : 401,
+                                            data : [],
+                                            message : "删除失败"
+                                        }
+                                        res.send(result);   
+                                    });
+                                }else{ 
+                                    var result = {
+                                        code : 401,
+                                        data : [],
+                                        message : "删除失败"
+                                    }
+                                    res.send(result);
+                                } 
+                            });
+                        });
+                      }
+                      // 关闭文件
+                      fs.close(fd, function(err){
+                         if (err){
+                            console.log(err);
+                         } 
+                         console.log("文件关闭成功");
+                      });
+                   });
+                });
+            }, function (error) {
+                // 删除失败
+                res.send(error);
+            });
+        }else{
+            var result = {
+                code    : 401,
+                message : "删除失败",
+                data : []
+            }
+            res.send(result);
+        }
+    }, function (error) {
+        // 异常处理
+        // console.log(error);
         var result = {
-            code : 200,
-            data : [],
-            message : "success"
+            code    : 401,
+            message : "删除失败",
+            data : []
         }
         res.send(result);
-    }, function (error) {
-        // 删除失败
-        res.send(error);
     });
+
+
+    // var api = AV.Object.createWithoutData('API', data.id);
+    // api.destroy().then(function (success) {
+    //     // 删除成功
+    //     //判断是否存在
+    //     var result = {
+    //         code : 200,
+    //         data : [],
+    //         message : "success"
+    //     }
+    //     res.send(result);
+    // }, function (error) {
+    //     // 删除失败
+    //     res.send(error);
+    // });
 });
 
 module.exports = router;

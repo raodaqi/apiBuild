@@ -92,6 +92,7 @@ app.use('/api', require('./routes/api'));
 app.use('/user', require('./routes/user'));
 
 //用户添加路由
+app.use('/test_test', require('./routes/test_test'));
 app.use('/test_snake', require('./routes/test_snake'));
 app.use('/test_car', require('./routes/test_car'));
 

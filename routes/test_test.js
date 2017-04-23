@@ -35,7 +35,7 @@ function validate(res,req,data){
 	return data;
 }
 
-var Test_snake = AV.Object.extend('Test_snake');
+var Test_test = AV.Object.extend('Test_test');
 
 // 新增
 router.post('/add', function(req, res, next) {
@@ -45,7 +45,7 @@ router.post('/add', function(req, res, next) {
 		return;
 	}
 	//创建应用
-	var addObj = new Test_snake();
+	var addObj = new Test_test();
 	for(var key in data){
 		addObj.set(key,data[key]);
 	}
@@ -74,13 +74,13 @@ router.get('/delete', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var delObj = AV.Object.createWithoutData('Test_snake', data.id);
+	var delObj = AV.Object.createWithoutData('Test_test', data.id);
 	delObj.destroy().then(function (success) {
 		// 删除成功
 		var result = {
 		   	code : 200,
 		   	data : [],
-		    message : '项目已存在'
+		    message : '删除成功'
 		}
 		res.send(result);
 	}, function(error) {
@@ -96,7 +96,7 @@ router.post('/edit', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var editObj = AV.Object.createWithoutData('Test_snake', data.id);
+	var editObj = AV.Object.createWithoutData('Test_test', data.id);
 	for(var key in data){
 		editObj.set(key,data[key]);
 	}
@@ -104,7 +104,7 @@ router.post('/edit', function(req, res, next) {
 		var result = {
 		    code : 200,
 		    data : editResult,
-		    message : 'success'
+		    message : '更改成功'
 		}
 		res.send(result);
 	}, function (error) {
@@ -128,7 +128,7 @@ router.get('/list', function(req, res, next) {
 	}
 	var limit = data.limit ? data.limit : 1000;
 	var skip  = data.skip ? data.skip : 0;
-	var query = new AV.Query('Test_snake');
+	var query = new AV.Query('Test_test');
 	query.skip(skip);
 	query.limit(limit);
 	for(var i in req.query){
@@ -180,7 +180,7 @@ router.get('/detail', function(req, res, next) {
 	if(!data){
 		return;
 	}
-	var query = new AV.Query('Test_snake');
+	var query = new AV.Query('Test_test');
 	query.get(data.id).then(function(results){
 		// 删除成功
 		var result = {

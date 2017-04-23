@@ -155,7 +155,7 @@ LCT.prototype = {
 				    "		var result = {\n"+
 					"		   	code : 200,\n"+
 					"		   	data : [],\n"+
-					"		    message : '项目已存在'\n"+
+					"		    message : '删除成功'\n"+
 					"		}\n"+
 					"		res.send(result);\n"+
 				  	"	}, function(error) {\n"+
@@ -179,7 +179,7 @@ LCT.prototype = {
 					"		var result = {\n"+
 					"		    code : 200,\n"+
 					"		    data : editResult,\n"+
-					"		    message : 'success'\n"+
+					"		    message : '更改成功'\n"+
 					"		}\n"+
 					"		res.send(result);\n"+
 					"	}, function (error) {\n"+

@@ -85,7 +85,7 @@
                 <div class="code-content">
                     <input type="text" name="table_desc" id="table-desc" placeholder="获取XX的XX详情">
                 </div>
-                <p>请求参数</p>
+                <p>请求参数<span class="color-r">（参数名只只能包含字母、数字、下划线）</span></p>
                 <div class="code-content">
                     <div class="parameter-list">
                         <div class="parameter-li">
@@ -178,9 +178,8 @@
     $('.check input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio-blue'
-    });                
+    });
   })
-
 
   //点击创建生成
   $(".create").on("click",function () {
@@ -194,24 +193,33 @@
       var table_para = [];
       $(".parameter-li").each(function (i,v) {
           if($(this).children(".para-name").val()){
-              var table_para_li = {
-                  para_name:$(this).children(".para-name").val(),
-                  para_desc:$(this).children(".para-desc").val(),
-                  para_must:$(this).find(".para-must").parent().hasClass("checked")
-              }
-              table_para.push(table_para_li);
+            var table_para_li = {
+              para_name:$(this).children(".para-name").val(),
+              para_desc:$(this).children(".para-desc").val(),
+              para_must:$(this).find(".para-must").parent().hasClass("checked")
+            }
+            table_para.push(table_para_li);
           }
       })
 
+      for(var i = 0 ; i < table_para.length; i++){
+        var patt2=new RegExp("^[a-zA-Z0-9_]*$");
+        //判断项目名称是否正确
+        if(!patt2.test(table_para[i].para_name)){
+          layer.msg("参数名(\""+table_para[i].para_name+"\")格式出错", {icon: 2});
+          return;
+        }
+      }
+
       var patt1=new RegExp("^[a-zA-Z][a-zA-Z0-9_]*$");
       //判断项目名称是否正确
-      if(!patt1.test($(this).val())){
+      if(!patt1.test(table_name)){
         $(".help-block").addClass("error");
-        $(this).addClass("error");
+        $("#table-name").addClass("error");
         return;
       }else{
         $(".help-block").removeClass("error");
-        $(this).removeClass("error");
+        $("#table-name").removeClass("error");
       }
 
       var data = {
@@ -231,17 +239,23 @@
         var url = "/api/add";
         data.table_name = $("#app_name").val()+"_"+table_name;
       }
-      
+
+      layer.load(0, {shade: false});
+
       var type = "GET";
       sendQuery(url,type,data,{
           success:function(result){
               //获取当前项目名称
               var data = result.data;
+              layer.closeAll();
               layer.msg('操作成功', {icon: 1});
-              window.location.reload();
+              setTimeout(function(){
+                window.location.reload();
+              }, 500);
           },
           error:function(error){
-              layer.msg(error.message, {icon: 2});
+            layer.closeAll();
+            layer.msg(error.message, {icon: 2});
           }
       })
   })
@@ -257,7 +271,7 @@
     });
 
     //获取当前链接
-    // var appid = 
+    // var appid =
     var search = location.search;
     if(search){
       id = search.split("?appid=")[1];
@@ -268,7 +282,7 @@
       location.href="/";
     }
     console.log(id);
-    
+
 
      if(id){
          //获取项目列表
@@ -310,7 +324,7 @@
          })
      }
   })
-  
+
   function formateData(data) {
       var menu = '';
       for(var i = 0; i < data.length; i++){
@@ -400,7 +414,7 @@
         $(".api-content").append(section);
 
         //list api 内容
-        var editParaContent = '<p>limit<span class="ml-10 desc">[ 限定返回数量</span> ]<input type="text" class="para-remark ml-10" name="limit" style="width:150px;" placeholder="测试值" value="1000"></p><p>skip<span class="ml-10 desc">[ 跳过数量</span> ]<input type="text" name="skip" class="para-remark ml-10" style="width:150px;" placeholder="测试值" value="0"></p>';
+        var editParaContent = '<p>limit<span class="ml-10 desc">[ 限定返回数量</span> ]<input type="text" class="para-remark ml-10" name="limit" style="width:150px;" placeholder="测试值" value="1000"></p><p>skip<span class="ml-10 desc">[ 跳过数量</span> ]<input type="text" name="skip" class="para-remark ml-10" style="width:150px;" placeholder="测试值" value="0"></p><p>sort<span class="ml-10 desc">[ 排序 ( name : 字段,type:-1 倒序, 其他正序 ) </span> ] ( Object )</p><p>{ name:<span class="ml-10 desc">[ 根据字段排序</span> ]<input type="text" class="para-remark ml-10" name="name" style="width:150px;" placeholder="字段名"></p><p> type：<span class="ml-10 desc">[ type: 1 正序, -1 倒序</span> ]<input type="text" class="para-remark ml-10" name="limit" style="width:150px;" placeholder="排序方式"> }</p>';
 
         paraContent = '<p>请求参数</p><div class="code-content">'+editParaContent+'</div>';
         var section = '<section class="sec-content" id="'+data[i].objectId+'list">'+
@@ -469,7 +483,7 @@
         var resultView = '<p>{</p>'+
                           '<p class="ml-20">"code":'+result.code+",</p>"+
                           '<p class="ml-20">"message":'+result.message+",</p>"+
-                          '<p class="ml-20">"data":['+JSON.stringify(result.data)+"]</p>"+
+                          '<p class="ml-20">"data":'+JSON.stringify(result.data)+"</p>"+
                           '<p>}</p>';
         $result.empty().append(resultView);
       },
@@ -487,6 +501,8 @@
       }, function(){
 //            layer.msg('的确很重要', {icon: 1});
           // var id = $(that).parent().attr("data-id");
+          layer.closeAll();
+          layer.load(0, {shade: false});
           var id = $("#table-id").val();
           var data = {id:id};
           var url = "/api/delete";
@@ -495,11 +511,15 @@
               success:function(result){
                   //获取当前项目名称
                   var data = result.data;
+                  layer.closeAll();
                   layer.msg('删除成功', {icon: 1});
-                  window.location.reload();
+                  setTimeout(function(){
+                    window.location.reload();
+                  }, 500);
               },
               error:function(error){
-                  layer.msg(error.message, {icon: 2});
+                layer.closeAll();
+                layer.msg(error.message, {icon: 2});
               }
           })
       }, function(){
@@ -557,7 +577,7 @@
                   radioClass: 'iradio-blue'
                 });
               }
-            }   
+            }
           }
           $(".sec-content").hide();
           $("#apimanage_add").show();
@@ -569,7 +589,7 @@
   //   //获取所有表单数据
   //   var data = $("#form").serializeArray();
   //   var url = "/app/create";
-  //   var type = "GET"; 
+  //   var type = "GET";
   //   sendQuery(url,type,data,{
   //     success:function(result){
   //       console.log(result);
