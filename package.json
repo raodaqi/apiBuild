@@ -16,7 +16,8 @@
     "express": "4.12.3",
     "leanengine": "^1.2.3",
     "superagent-charset": "^1.1.1",
-    "superagent":"2.0.0"
+    "superagent":"2.0.0",
+    "lc-build":"1.0.8"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
