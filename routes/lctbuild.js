@@ -52,6 +52,7 @@ LCT.prototype = {
 		        var filetext = buf.slice(0, bytes).toString();
 		        filetext = filetext.replace("app.use('/"+that._path+"', require('./routes/"+that._path+"'));\n","");
 		        filetext = filetext.replace("//用户添加路由","//用户添加路由\napp.use('/"+that._path+"', require('./routes/"+that._path+"'));");
+		        filetext = filetext.replace("//设置跨域访问","//设置跨域访问\napp.all('/"+that._path+"/*', requireAuthentication);");
 		        fs.writeFile('app.js',filetext,  function(err) {
 		           if (err) {
 		               return console.error(err);

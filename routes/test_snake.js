@@ -158,13 +158,11 @@ router.get('/list', function(req, res, next) {
 				if(number[j] == i)
 				isNum = true;
 			}
-
-			if(isNum && type < 7){
+			if(isNum){
 				var value = isNaN(Number(req.query[i].value)) ? 0 : Number(req.query[i].value);
 			}else{
 				var value = req.query[i].value;
 			}
-			console.log(value);
 			switch(type){
 				case 1: query.equalTo(i, value);
 						break;
