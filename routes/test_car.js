@@ -80,7 +80,7 @@ router.get('/delete', function(req, res, next) {
 		var result = {
 		   	code : 200,
 		   	data : [],
-		    message : '项目已存在'
+		    message : '删除成功'
 		}
 		res.send(result);
 	}, function(error) {
@@ -104,7 +104,7 @@ router.post('/edit', function(req, res, next) {
 		var result = {
 		    code : 200,
 		    data : editResult,
-		    message : 'success'
+		    message : '更改成功'
 		}
 		res.send(result);
 	}, function (error) {
@@ -120,7 +120,9 @@ router.post('/edit', function(req, res, next) {
 router.get('/list', function(req, res, next) {
 	var data = {
 		limit : '',
-		skip  : ''
+		skip  : '',
+		asc   : '',
+		desc  : ''
     }
 	var data = validate(res,req,data);
 	if(!data){
@@ -131,21 +133,38 @@ router.get('/list', function(req, res, next) {
 	var query = new AV.Query('Test_car');
 	query.skip(skip);
 	query.limit(limit);
-	for(var i in req.query){
-		if(i != 'skip' && i != 'limit' && i != 'sort'){
-			query.equalTo(i, req.query[i]);
-		}
+	if(data.asc){
+		query.ascending(data.asc);
 	}
-	if(req.query.sort && req.query.sort.name){
-		try{
-			req.query.sort.type != -1 ? query.ascending(req.query.sort.name) : query.descending(req.query.sort.name);
-		}catch(err){
-			var result = {
-				code    : 401,
-				message : err.message,
-				data    : []
+	if(data.desc){
+		query.descending(data.desc);
+	}
+	for(var i in req.query){
+		if(i == 'skip' || i == 'limit' || i == 'asc' || i == 'asc'){
+			break;
+		}
+		if(i.type && i.value){
+			switch(i.type){
+				case 1: query.equalTo(i, i.value);
+						break;
+				case 2: query.notEqualTo(i, i.value);
+						break;
+				case 3: query.greaterThan(i, i.value);
+						break;
+				case 4: query.greaterThanOrEqualTo(i, i.value);
+						break;
+				case 5: query.lessThan(i, i.value);
+						break;
+				case 6: query.lessThanOrEqualTo(i, i.value);
+						break;
+				case 7: query.startsWith(i, i.value);
+						break;
+				case 8: query.contains(i, i.value);
+						break;
+				case 0: query.exists(i);
+						break;
+				default: break;
 			}
-			res.send(result);
 		}
 	}
 	query.find().then(function (results) {

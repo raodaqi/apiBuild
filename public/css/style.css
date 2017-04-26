@@ -335,7 +335,7 @@ li img {
 }
 
 .color-r{
-    color: red;
+    color: red !important;
 }
 
 .color-o{

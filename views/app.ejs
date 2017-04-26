@@ -46,6 +46,14 @@
   .title.bold.apiactive{
     color: #609be3 !important;
   }
+  .search-li{
+    margin-top: 10px;
+  }
+  .select-box button{
+    position: relative;
+    bottom: 2px;
+    padding: 8px 12px;
+  }
 </style>
 <nav class="navbar navbar-custom navbar-fixed-top top-nav-collapse" role="navigation" id="title">
   <div class="navbar-header page-scroll">
@@ -95,6 +103,10 @@
                                 <input type="checkbox" class="para-must"  checked>
                                 <label for="input-1">必须参数</label>
                             </div>
+                            <div class="check ml-10">
+                                <input type="checkbox" class="para-number"  checked>
+                                <label for="input-2">是否是Number型</label>
+                            </div>
                             <div class="iconfont icon-x"></div>
                         </div>
                     </div>
@@ -120,11 +132,15 @@
   //添加参数
   $(".add").on("click",function () {
         var li = '<div class="parameter-li mt-20">'+
-                '<input type="text" class="para-name"  style="width:300px;margin-right: 6px" placeholder="参数名">'+
-                '<input type="text" class="para-desc"  style="width:300px;margin-right: 6px" placeholder="参数描述">'+
+                '<input type="text" class="para-name"  style="width:200px;margin-right: 6px" placeholder="参数名">'+
+                '<input type="text" class="para-desc"  style="width:200px;margin-right: 6px" placeholder="参数描述">'+
                 '<div class="check">'+
                 '<input type="checkbox" class="para-must"  checked>'+
                 '<label for="input-1">必须参数</label>'+
+                '</div>'+
+                '<div class="check ml-10">'+
+                '<input type="checkbox" class="para-number">'+
+                '<label for="input-2">是否是Number型</label>'+
                 '</div>'+
                 '<div class="iconfont icon-x"></div>'+
                 '</div>';
@@ -166,11 +182,15 @@
     $("#table-desc").val("");
     $(".parameter-list").empty();
     var li = '<div class="parameter-li mt-20">'+
-                '<input type="text" class="para-name"  style="width:300px;margin-right: 6px" placeholder="参数名">'+
-                '<input type="text" class="para-desc"  style="width:300px;margin-right: 6px" placeholder="参数描述">'+
+                '<input type="text" class="para-name"  style="width:200px;margin-right: 6px" placeholder="参数名">'+
+                '<input type="text" class="para-desc"  style="width:200px;margin-right: 6px" placeholder="参数描述">'+
                 '<div class="check">'+
                 '<input type="checkbox" class="para-must"  checked>'+
                 '<label for="input-1">必须参数</label>'+
+                '</div>'+
+                '<div class="check ml-10">'+
+                '<input type="checkbox" class="para-number">'+
+                '<label for="input-2">是否是Number型</label>'+
                 '</div>'+
                 '<div class="iconfont icon-x"></div>'+
                 '</div>';
@@ -196,7 +216,8 @@
             var table_para_li = {
               para_name:$(this).children(".para-name").val(),
               para_desc:$(this).children(".para-desc").val(),
-              para_must:$(this).find(".para-must").parent().hasClass("checked")
+              para_must:$(this).find(".para-must").parent().hasClass("checked"),
+              para_number:$(this).find(".para-number").parent().hasClass("checked")
             }
             table_para.push(table_para_li);
           }
@@ -413,8 +434,34 @@
         '</section>';
         $(".api-content").append(section);
 
+        var selectText = '<div class="select-box" style="display:inline-block;margin:0 15px;">'+
+                         '<div class="btn-group">'+
+                         '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                          '<span class="dropdown-text" id="api-request">等于（1）</span>'+
+                          '<span class="caret"></span>'+
+                          '</button>'+
+                          '<ul class="dropdown-menu">'+
+                          '<li><a data-type="1">等于（1）</a></li>'+
+                          '<li><a data-type="2">不等于（2）</a></li>'+
+                          '<li><a data-type="3">大于（3）</a></li>'+
+                          '<li><a data-type="4">大于等于（4）</a></li>'+
+                          '<li><a data-type="5">小于（5）</a></li>'+
+                          '<li><a data-type="6">小于等于（6）</a></li>'+
+                          '<li><a data-type="7">前缀查询（7）</a></li>'+
+                          '<li><a data-type="8">包含查询（8）</a></li>'+
+                          '<li><a data-type="9">不包含查询（9）</a></li>'+
+                          '<li><a data-type="0">空值查询（0）</a></li>'+
+                          '</ul>'+
+                          '</div>'+
+                          '</div>';
+
         //list api 内容
-        var editParaContent = '<p>limit<span class="ml-10 desc">[ 限定返回数量</span> ]<input type="text" class="para-remark ml-10" name="limit" style="width:150px;" placeholder="测试值" value="1000"></p><p>skip<span class="ml-10 desc">[ 跳过数量</span> ]<input type="text" name="skip" class="para-remark ml-10" style="width:150px;" placeholder="测试值" value="0"></p><p>sort<span class="ml-10 desc">[ 排序 ( name : 字段,type:-1 倒序, 其他正序 ) </span> ] ( Object )</p><p>{ name:<span class="ml-10 desc">[ 根据字段排序</span> ]<input type="text" class="para-remark ml-10" name="name" style="width:150px;" placeholder="字段名"></p><p> type：<span class="ml-10 desc">[ type: 1 正序, -1 倒序</span> ]<input type="text" class="para-remark ml-10" name="limit" style="width:150px;" placeholder="排序方式"> }</p>';
+        var editParaContent = '<p>limit<span class="ml-10 desc">[ 限定返回数量</span> ]<input type="text" class="para-remark ml-10" name="limit" style="width:150px;" placeholder="测试值" value="1000"></p>'+
+          '<p>skip<span class="ml-10 desc">[ 跳过数量</span> ]<input type="text" name="skip" class="para-remark ml-10" style="width:150px;" placeholder="测试值" value="0"></p>'+
+          '<p>asc<span class="ml-10 desc">[ 升序排列</span> ] <input type="text" name="asc" class="para-remark ml-10" style="width:150px;" placeholder="字段名"></p>'+
+          '<p>desc<span class="ml-10 desc">[ 降序排列</span> ] <input type="text" name="desc" class="para-remark ml-10" style="width:150px;" placeholder="字段名"></p>'+
+          '<p class="color-r"><span>[ 搜索条件</span> ] 搜索字段名：{type："逻辑值",value:"搜索字段值"}</p><p class="color-r">eg: name:{type:1,value:"测试"}</p>'+
+          '<div class="search-content"><div class="search-list">'+getSelectText()+'</div></div><div class="mt-20"><button type="button" class="btn btn-primary search-add">添加</button></div></div>';
 
         paraContent = '<p>请求参数</p><div class="code-content">'+editParaContent+'</div>';
         var section = '<section class="sec-content" id="'+data[i].objectId+'list">'+
@@ -436,6 +483,7 @@
           '<h1 class="sec-title">detail</h1>'+
           '<p>URI:</p>'+
           '<div class="code-content api-url">'+location.origin+'/'+data[i].table_name+'/detail</div>'+
+          '<p>HTTP请求方式</p><div class="code-content api-request">GET</div>'+
           paraContent+
           '<p><span class="btn btn-success make">测试接口</span></p>'+
           '<div class="code-content api-result"></div>'+
@@ -446,6 +494,46 @@
         }
         $(".menu").empty().append(menu);
   }
+
+  function getSelectText(){
+    var selectText = '<div class="select-box" style="display:inline-block;margin:0 15px;">'+
+                         '<div class="btn-group">'+
+                         '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                          '<span class="dropdown-text" data-type="1">等于（1）</span>'+
+                          '<span class="caret"></span>'+
+                          '</button>'+
+                          '<ul class="dropdown-menu">'+
+                          '<li><a data-type="1">等于（1）</a></li>'+
+                          '<li><a data-type="2">不等于（2）</a></li>'+
+                          '<li><a data-type="3">大于（3）</a></li>'+
+                          '<li><a data-type="4">大于等于（4）</a></li>'+
+                          '<li><a data-type="5">小于（5）</a></li>'+
+                          '<li><a data-type="6">小于等于（6）</a></li>'+
+                          '<li><a data-type="7">前缀查询（7）</a></li>'+
+                          '<li><a data-type="8">包含查询（8）</a></li>'+
+                          '<li><a data-type="0">空值查询（0）</a></li>'+
+                          '</ul>'+
+                          '</div>'+
+                          '</div>';
+      var search_li = '<div class="search-li"><input type="text" name="apibuild_search_name" class="para-remark apibuild_search_name" style="width:100px;" placeholder="字段名">'+selectText+'<input type="text" name="apibuild_search_value" class="para-remark ml-10 apibuild_search_value" style="width:100px;" placeholder="对应值"><div class="iconfont icon-x"></div>';
+      return search_li;
+  }
+
+  $(document).on("click",".dropdown-menu li",function(){
+    //判断点击的选项
+    var type = $(this).children("a").attr("data-type");
+    //将父元素中的显示框设置为当前值
+    $(this).parent().parent().find(".dropdown-text").text($(this).text());
+    console.log(type);
+    $(this).parent().parent().find(".dropdown-text").attr("data-type",type);
+  })
+
+  //点击添加
+  $(document).on("click",".search-add",function(){
+    //获取当前需要添加上去的父元素
+    $search_list = $(this).parent().parent().find(".search-list");
+    $search_list.append(getSelectText());
+  })
 
   //获取生成结果
   $(document).on("click",".make",function(){
@@ -458,6 +546,11 @@
 
     try {
       $("#"+id+" input").each(function(){
+
+        if($(this).attr("name")=="apibuild_search_name" || $(this).attr("name")=="apibuild_search_value"){
+          return;
+        }
+
         if($(this).next(".color-r").text() && !$(this).val()){
           var desc = $(this).parent().find(".desc").text().split("[")[1];
           throw desc;
@@ -471,6 +564,24 @@
       layer.msg("缺少"+err, {icon: 2});
       return;
     }
+
+    //遍历search-li
+    $("#"+id+" .search-li").each(function(){
+      var apibuild_search_name = $(this).children(".apibuild_search_name").val();
+      //获取搜索类型
+      var type = $(this).children(".select-box").find(".dropdown-text").attr("data-type");
+      var apibuild_search_value = $(this).children(".apibuild_search_value").val();
+      console.log(type);
+      //对于参数不全的数据不保存
+      if(type && apibuild_search_name && apibuild_search_value){
+        type = parseInt(type);
+        data[apibuild_search_name] = {
+          type  : type,
+          value : apibuild_search_value
+        }
+      } 
+    })
+    console.log(data);
 
     $result.empty().append('<div id="" class="layui-layer-content layui-layer-loading0"></div></div>');
 
@@ -562,11 +673,15 @@
               }
               for(var k = 0; k < table_para.length; k++){
                 var li = '<div class="parameter-li mt-20">'+
-                          '<input type="text" class="para-name"  style="width:300px;margin-right: 6px" placeholder="参数名" value="'+table_para[k].para_name+'">'+
-                          '<input type="text" class="para-desc"  style="width:300px;margin-right: 6px" placeholder="参数描述" value="'+table_para[k].para_desc+'">'+
+                          '<input type="text" class="para-name"  style="width:200px;margin-right: 6px" placeholder="参数名" value="'+table_para[k].para_name+'">'+
+                          '<input type="text" class="para-desc"  style="width:200px;margin-right: 6px" placeholder="参数描述" value="'+table_para[k].para_desc+'">'+
                           '<div class="check">'+
                           '<input type="checkbox" class="para-must" '+(table_para[k].para_must ? "checked":"")+'>'+
                           '<label for="input-1">必须参数</label>'+
+                          '</div>'+
+                          '<div class="check ml-10">'+
+                          '<input type="checkbox" disabled class="para-number" '+(table_para[k].para_number ? "checked":"")+'>'+
+                          '<label for="input-2">是否是Number型</label>'+
                           '</div>'+
                           '<div class="iconfont icon-x"></div>'+
                           '</div>';

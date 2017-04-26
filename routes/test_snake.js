@@ -39,10 +39,16 @@ var Test_snake = AV.Object.extend('Test_snake');
 
 // 新增
 router.post('/add', function(req, res, next) {
-	var data = {"name":"name"};
+	var data = {"name":"name","grade":"grade"};
 	var data = validate(res,req,data);
 	if(!data){
 		return;
+	}
+	//强制转换Number型
+	var number = ["grade"];
+	for(var i = 0; i < number.length; i++){
+		var name = number[i];
+		data[name] = isNaN(Number(data[name])) ? 0 : Number(data[name]);
 	}
 	//创建应用
 	var addObj = new Test_snake();
@@ -80,7 +86,7 @@ router.get('/delete', function(req, res, next) {
 		var result = {
 		   	code : 200,
 		   	data : [],
-		    message : '项目已存在'
+		    message : '删除成功'
 		}
 		res.send(result);
 	}, function(error) {
@@ -90,7 +96,7 @@ router.get('/delete', function(req, res, next) {
 
 // 编辑
 router.post('/edit', function(req, res, next) {
-	var data = {"name":"name"};
+	var data = {"name":"name","grade":"grade"};
 	data.id = 'id';
 	var data = validate(res,req,data);
 	if(!data){
@@ -104,7 +110,7 @@ router.post('/edit', function(req, res, next) {
 		var result = {
 		    code : 200,
 		    data : editResult,
-		    message : 'success'
+		    message : '更改成功'
 		}
 		res.send(result);
 	}, function (error) {
@@ -120,7 +126,9 @@ router.post('/edit', function(req, res, next) {
 router.get('/list', function(req, res, next) {
 	var data = {
 		limit : '',
-		skip  : ''
+		skip  : '',
+		asc   : '',
+		desc  : ''
     }
 	var data = validate(res,req,data);
 	if(!data){
@@ -131,21 +139,53 @@ router.get('/list', function(req, res, next) {
 	var query = new AV.Query('Test_snake');
 	query.skip(skip);
 	query.limit(limit);
-	for(var i in req.query){
-		if(i != 'skip' && i != 'limit' && i != 'sort'){
-			query.equalTo(i, req.query[i]);
-		}
+	if(data.asc){
+		query.ascending(data.asc);
 	}
-	if(req.query.sort && req.query.sort.name){
-		try{
-			req.query.sort.type != -1 ? query.ascending(req.query.sort.name) : query.descending(req.query.sort.name);
-		}catch(err){
-			var result = {
-				code    : 401,
-				message : err.message,
-				data    : []
+	if(data.desc){
+		query.descending(data.desc);
+	}
+	for(var i in req.query){
+		if(i == 'skip' || i == 'limit' || i == 'asc' || i == 'desc'){
+			continue;
+		}
+		if(req.query[i].type && req.query[i].value){
+			var type = isNaN(req.query[i].type) ? 9 : Number(req.query[i].type);
+			//强制转换Number型
+			var number = ["grade"];
+			var isNum = false;
+			for(var j = 0; j < number.length; j++){
+				if(number[j] == i)
+				isNum = true;
 			}
-			res.send(result);
+
+			if(isNum && type < 7){
+				var value = isNaN(Number(req.query[i].value)) ? 0 : Number(req.query[i].value);
+			}else{
+				var value = req.query[i].value;
+			}
+			console.log(value);
+			switch(type){
+				case 1: query.equalTo(i, value);
+						break;
+				case 2: query.notEqualTo(i, value);
+						break;
+				case 3: query.greaterThan(i, value);
+						break;
+				case 4: query.greaterThanOrEqualTo(i, value);
+						break;
+				case 5: query.lessThan(i, value);
+						break;
+				case 6: query.lessThanOrEqualTo(i, value);
+						break;
+				case 7: query.startsWith(i, value);
+						break;
+				case 8: query.contains(i, value);
+						break;
+				case 0: query.exists(i);
+						break;
+				default: break;
+			}
 		}
 	}
 	query.find().then(function (results) {

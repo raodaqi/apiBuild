@@ -92,10 +92,10 @@ app.use('/api', require('./routes/api'));
 app.use('/user', require('./routes/user'));
 
 //用户添加路由
-app.use('/ceshi_add', require('./routes/ceshi_add'));
-app.use('/test_test', require('./routes/test_test'));
 app.use('/test_snake', require('./routes/test_snake'));
 app.use('/test_car', require('./routes/test_car'));
+app.use('/ceshi_add', require('./routes/ceshi_add'));
+app.use('/test_test', require('./routes/test_test'));
 
 app.use(function(req, res, next) {
   // 如果任何一个路由都没有返回响应，则抛出一个 404 异常给后续的异常处理器

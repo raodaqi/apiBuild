@@ -17,6 +17,7 @@ var LCT = function(option){
 	//将para解析成data
 	var para = JSON.parse(this._para);
 	var data = {};
+	var number = [];
 	for(var i = 0; i < para.length; i++){
 		if(para[i].para_must){
 			var value = para[i].para_name ? para[i].para_name : para[i].para_name
@@ -24,8 +25,13 @@ var LCT = function(option){
 		}else{
 			data[para[i].para_name] = '';
 		}
+
+		if(para[i].para_number){
+			number.push(para[i].para_name);
+		}
 	}
 	this._data  = data;
+	this._number  = number;
 	console.log(this._path);
 } 
 LCT.prototype = {
@@ -119,6 +125,12 @@ LCT.prototype = {
     				"	if(!data){\n"+
         			"		return;\n"+
     				"	}\n"+
+    				"	//强制转换Number型\n"+
+    				"	var number = "+JSON.stringify(this._number)+";\n"+
+    				"	for(var i = 0; i < number.length; i++){\n"+
+    				"		var name = number[i];\n"+
+    				"		data[name] = isNaN(Number(data[name])) ? 0 : Number(data[name]);\n"+
+    				"	}\n"+
 				    "	//创建应用\n"+
 				    "	var addObj = new "+this._name+"();\n"+
 				    "	for(var key in data){\n"+
@@ -195,7 +207,9 @@ LCT.prototype = {
 					"router.get('/list', function(req, res, next) {\n"+
 					"	var data = {\n"+
 					"		limit : '',\n"+
-					"		skip  : ''\n"+
+					"		skip  : '',\n"+
+					"		asc   : '',\n"+
+					"		desc  : ''\n"+
 				    "    }\n"+
 				    "	var data = validate(res,req,data);\n"+
     				"	if(!data){\n"+
@@ -206,22 +220,52 @@ LCT.prototype = {
     				"	var query = new AV.Query('"+this._name+"');\n"+
     				"	query.skip(skip);\n"+
     				"	query.limit(limit);\n"+
-    				"	for(var i in req.query){\n"+
-        			"		if(i != 'skip' && i != 'limit' && i != 'sort'){\n"+
-        			"			query.equalTo(i, req.query[i]);\n"+
-        			"		}\n"+
+    				"	if(data.asc){\n"+
+    				"		query.ascending(data.asc);\n"+
     				"	}\n"+
-    				"	if(req.query.sort && req.query.sort.name){\n"+
-    				"		try{\n"+
-    				"			req.query.sort.type != -1 ? query.ascending(req.query.sort.name) : query.descending(req.query.sort.name);\n"+
-    				"		}catch(err){\n"+
-    				"			var result = {\n"+
-    				"				code    : 401,\n"+
-    				"				message : err.message,\n"+
-    				"				data    : []\n"+
+    				"	if(data.desc){\n"+
+    				"		query.descending(data.desc);\n"+
+    				"	}\n"+
+    				"	for(var i in req.query){\n"+
+        			"		if(i == 'skip' || i == 'limit' || i == 'asc' || i == 'desc'){\n"+
+        			"			continue;\n"+
+        			"		}\n"+
+        			"		if(req.query[i].type && req.query[i].value){\n"+
+        			"			var type = isNaN(req.query[i].type) ? 9 : Number(req.query[i].type);\n"+
+        			"			//强制转换Number型\n"+
+    				"			var number = "+JSON.stringify(this._number)+";\n"+
+    				"			var isNum = false;\n"+
+    				"			for(var j = 0; j < number.length; j++){\n"+
+    				"				if(number[j] == i)\n"+
+    				"				isNum = true;\n"+
     				"			}\n"+
-    				"			res.send(result);\n"+
-    				"		}\n"+
+    				"			if(isNum){\n"+
+    				"				var value = isNaN(Number(req.query[i].value)) ? 0 : Number(req.query[i].value);\n"+
+    				"			}else{\n"+
+    				"				var value = req.query[i].value;\n"+
+    				"			}\n"+
+        			"			switch(type){\n"+
+        			"				case 1: query.equalTo(i, value);\n"+
+        			"						break;\n"+
+        			"				case 2: query.notEqualTo(i, value);\n"+
+        			"						break;\n"+
+        			"				case 3: query.greaterThan(i, value);\n"+
+        			"						break;\n"+
+        			"				case 4: query.greaterThanOrEqualTo(i, value);\n"+
+        			"						break;\n"+
+        			"				case 5: query.lessThan(i, value);\n"+
+        			"						break;\n"+
+        			"				case 6: query.lessThanOrEqualTo(i, value);\n"+
+        			"						break;\n"+
+        			"				case 7: query.startsWith(i, value);\n"+
+        			"						break;\n"+
+        			"				case 8: query.contains(i, value);\n"+
+        			"						break;\n"+
+        			"				case 0: query.exists(i);\n"+
+        			"						break;\n"+
+        			"				default: break;\n"+
+        			"			}\n"+
+        			"		}\n"+
     				"	}\n"+
     				"	query.find().then(function (results) {\n"+
 				    "		// 查询成功\n"+
