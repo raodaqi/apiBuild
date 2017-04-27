@@ -43,7 +43,7 @@
             <ul class="dropdown-menu">
               <li><a class="logout">退出登录</a></li>
             </ul>
-          </div>    
+          </div>
         <% } %>
       </div>
     </div>
@@ -73,6 +73,10 @@
                 <div class="help-block">只能包含字母、数字、下划线，必须以字母开头</div>
               </div>
               <div class="form-group">
+                <label for="exampleInputEmail1">apimanage的id</label>
+                <input type="text" class="form-control" name="api_manage_id" id="api_manage_id">
+              </div>
+              <div class="form-group">
                 <label for="exampleInputEmail1">项目描述</label>
                 <textarea class="form-control" rows="3" name="app_desc" id="appdesc"></textarea>
               </div>
@@ -100,8 +104,11 @@
                       <div class="form-group">
                           <label for="exampleInputEmail1">项目名称</label>
                           <input type="text" class="form-control" name="edit_app_name" id="edit_app_name" disabled="true">
-
                           <div class="help-block">只能包含字母、数字、下划线，必须以字母开头</div>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">apimanage的id</label>
+                        <input type="text" class="form-control" name="api_manage_id" id="api_manage_id">
                       </div>
                       <div class="form-group">
                           <label for="exampleInputEmail1">项目描述</label>
@@ -164,7 +171,7 @@
     $(".logout").on("click",function(){
       var data ={};
       var url = "/user/logout";
-      var type = "GET"; 
+      var type = "GET";
       sendQuery(url,type,data,{
         success:function(result){
           console.log(result);
@@ -205,7 +212,7 @@
     }
 
     var url = "/app/create";
-    var type = "GET"; 
+    var type = "GET";
     sendQuery(url,type,data,{
       success:function(result){
         console.log(result);
@@ -244,7 +251,7 @@
     //获取项目列表
     var data = {};
     var url = "/app/list";
-    var type = "GET"; 
+    var type = "GET";
     sendQuery(url,type,data,{
       success:function(result){
         console.log(result);

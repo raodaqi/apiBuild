@@ -17,7 +17,8 @@
     "leanengine": "^1.2.3",
     "superagent-charset": "^1.1.1",
     "superagent":"2.0.0",
-    "lc-build":"1.0.8"
+    "lc-build":"1.0.8",
+    "api-send":"1.0.4"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

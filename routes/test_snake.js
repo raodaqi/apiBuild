@@ -1,6 +1,9 @@
 'use strict';
 var router = require('express').Router();
 var AV = require('leanengine');
+var AS = require('api-send');
+AS.config.APPID = '5901a377da2f60005de72ef9';
+AS.config.HOST = 'http://apibuild.leanapp.cn';
 
 function sendError(res,code,message){
 	var result = {
@@ -12,6 +15,10 @@ function sendError(res,code,message){
 }
 
 function validate(res,req,data){
+if(AS.config.APPID && !AS.add(req,data)){
+res.send('true');
+return;
+}
 	for(var i in data){
 		if(req.method == 'GET'){
 			var value = req.query[i];
@@ -232,4 +239,6 @@ router.get('/detail', function(req, res, next) {
 	}).catch(next);
 })
 
+if(AS.config.APPID)
+AS.build('/test_snake',router);
 module.exports = router;

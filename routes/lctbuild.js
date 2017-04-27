@@ -7,6 +7,7 @@ var LCT = function(option){
 	this._name = option.name;
 	this._res  = option.res;
 	this._path = option.name;
+	this._api_manage_id = option.api_manage_id ? option.api_manage_id : "";
 	if(!option.name) {
 	    throw new Error('表明不能为空');
 	}
@@ -33,7 +34,7 @@ var LCT = function(option){
 	this._data  = data;
 	this._number  = number;
 	console.log(this._path);
-} 
+}
 LCT.prototype = {
 	buildApp:function(){
 		var that = this;
@@ -45,7 +46,7 @@ LCT.prototype = {
 		      if (err){
 		         console.log(err);
 		      }
-		      
+
 		      // 仅输出读取的字节
 		      if(bytes > 0){
 		         // console.log(buf.slice(0, bytes).toString());
@@ -65,12 +66,12 @@ LCT.prototype = {
 		           that._res.send(result);
 		        });
 		      }
-		      
+
 		      // 关闭文件
 		      fs.close(fd, function(err){
 		         if (err){
 		            console.log(err);
-		         } 
+		         }
 		         console.log("文件关闭成功");
 		      });
 		   });
@@ -82,7 +83,10 @@ LCT.prototype = {
 
 		buildText = "'use strict';\n"+
 					"var router = require('express').Router();\n"+
-					"var AV = require('leanengine');\n\n"+
+					"var AV = require('leanengine');\n"+
+					"var AS = require('api-send');\n"+
+					"AS.config.APPID = '"+this._api_manage_id+"';\n"+
+					"AS.config.HOST = 'http://apibuild.leanapp.cn';\n\n"+
 					"function sendError(res,code,message){\n"+
 					"	var result = {\n"+
 					"		code:code,\n"+
@@ -92,6 +96,10 @@ LCT.prototype = {
 					"	res.send(result);\n"+
 					"}\n\n"+
 					"function validate(res,req,data){\n"+
+						"if(AS.config.APPID && !AS.add(req,data)){\n"+
+							"res.send('true');\n"+
+							"return;\n"+
+						"}\n"+
     				"	for(var i in data){\n"+
         			"		if(req.method == 'GET'){\n"+
             		"			var value = req.query[i];\n"+
@@ -150,7 +158,7 @@ LCT.prototype = {
 					"			message : '保存出错'\n"+
 					"		}\n"+
 					"		res.send(result);\n"+
-					"	});\n"+                                              
+					"	});\n"+
 					"})\n\n";
 		//删除
 		buildText+=	"// 删除\n"+
@@ -200,7 +208,7 @@ LCT.prototype = {
 					"		    code : 500,\n"+
 					"		    message : '保存出错'\n"+
 					"		}\n"+
-					"		res.send(result);\n"+                                            
+					"		res.send(result);\n"+
 					"	}).catch(next);\n"+
 					"})\n\n";
 		//查找
@@ -314,7 +322,9 @@ LCT.prototype = {
 					"	}).catch(next);\n"+
 					"})\n\n";
 
-		buildText+= "module.exports = router;";
+		buildText+= "if(AS.config.APPID)\n"+
+								"AS.build('/"+this._path+"',router);\n"+
+								"module.exports = router;";
 
 		var that = this;
 		//生成文件
@@ -325,4 +335,3 @@ LCT.prototype = {
 }
 
 module.exports = LCT;
-

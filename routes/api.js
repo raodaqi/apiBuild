@@ -414,21 +414,22 @@ router.get('/add', function(req, res, next) {
             }
             res.send(result);
         }else{
+          //获取当前的apimanage
+          var query = new AV.Query('APP');
+          query.get(data.app_id).then(function(results){
+
+            var api_manage_id = results.attributes.api_manage_id;
+
             var api = new API();
             for(var i in data){
                 api.set(i,data[i]);
             }
             api.save().then(function (api) {
-                // var result = {
-                //     code : 200,
-                //     data : api,
-                //     message : "success"
-                // }
-                // res.send(result);
                 console.log(LCT);
                 var lct = new LCT({
                     para:data.table_para,
                     name:data.table_name,
+                    api_manage_id:api_manage_id,
                     res : res
                 })
                 lct.build();
@@ -440,28 +441,45 @@ router.get('/add', function(req, res, next) {
                 }
                 res.send(result);
             });
+
+          }, function(error) {
+            res.send(error);
+          }).catch(next);
         }
     }, function(err) {
         if (err.code === 101) {
             //判断是否存在
-            var api = new API();
-            for(var i in data){
-                api.set(i,data[i]);
-            }
-            api.save().then(function (api) {
-                var result = {
-                    code : 200,
-                    data : api,
-                    message : "success"
-                }
-                res.send(result);
-            }, function (error) {
-                var result = {
-                    code : 500,
-                    message : "保存出错"
-                }
-                res.send(result);
-            });
+            //获取当前的apimanage
+            var query = new AV.Query('APP');
+            query.get(data.app_id).then(function(results){
+
+              var api_manage_id = results.attributes.api_manage_id;
+
+              var api = new API();
+              for(var i in data){
+                  api.set(i,data[i]);
+              }
+              api.save().then(function (api) {
+                  console.log(LCT);
+                  var lct = new LCT({
+                      para:data.table_para,
+                      name:data.table_name,
+                      api_manage_id:api_manage_id,
+                      res : res
+                  })
+                  lct.build();
+
+              }, function (error) {
+                  var result = {
+                      code : 500,
+                      message : "保存出错"
+                  }
+                  res.send(result);
+              });
+
+            }, function(error) {
+              res.send(error);
+            }).catch(next);
         } else {
             next(err);
         }
@@ -541,7 +559,7 @@ router.get('/edit', function(req, res, next) {
     //获取当前的appid
 //    var appid = req.query.appid;
     var data = {
-        table_id      : "table_id不能为空",   
+        table_id      : "table_id不能为空",
         app_id        : "appid不能为空",
         table_name    : "表名称不能为空",
         table_desc    : "",
@@ -551,24 +569,27 @@ router.get('/edit', function(req, res, next) {
     if(!data){
         return;
     }
-    // console.log(data);
     var api = AV.Object.createWithoutData('API', data.table_id);
     for(var i in data){
         api.set(i,data[i]);
     }
     api.save().then(function (api) {
-        // var result = {
-        //     code : 200,
-        //     data : api,
-        //     message : "success"
-        // }
-        // res.send(result);
+      //获取当前的apimanage
+      var query = new AV.Query('APP');
+      query.get(api.attributes.app_id).then(function(results){
+
+        var api_manage_id = results.attributes.api_manage_id;
         var lct = new LCT({
             para:data.table_para,
             name:data.table_name,
+            api_manage_id:api_manage_id,
             res : res
         })
         lct.build();
+
+      }, function(error) {
+        res.send(error);
+      }).catch(next);
     }, function (error) {
         var result = {
             code : 500,
@@ -631,7 +652,7 @@ router.get('/delete', function(req, res, next) {
         id   : "api的id不能为空"
     }
     var data = validate(res,req,"GET",data);
-    if(!data){ 
+    if(!data){
         return;
     }
 
@@ -664,7 +685,7 @@ router.get('/delete', function(req, res, next) {
                                return console.error(err);
                            }
                            //删除文件
-                            fs.unlink("routes/"+table_name+".js", function(err){ 
+                            fs.unlink("routes/"+table_name+".js", function(err){
                                 if(!err){
                                     //清空数据
                                     console.log(table_name);
@@ -696,16 +717,16 @@ router.get('/delete', function(req, res, next) {
                                             data : [],
                                             message : "删除失败"
                                         }
-                                        res.send(result);   
+                                        res.send(result);
                                     });
-                                }else{ 
+                                }else{
                                     var result = {
                                         code : 401,
                                         data : [],
                                         message : "删除失败"
                                     }
                                     res.send(result);
-                                } 
+                                }
                             });
                         });
                       }
@@ -713,7 +734,7 @@ router.get('/delete', function(req, res, next) {
                       fs.close(fd, function(err){
                          if (err){
                             console.log(err);
-                         } 
+                         }
                          console.log("文件关闭成功");
                       });
                    });

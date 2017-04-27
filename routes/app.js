@@ -107,6 +107,7 @@ router.get('/', function(req, res, next) {
 router.get('/create', function(req, res, next) {
 	var app_name = req.query.app_name;
 	var app_desc = req.query.app_desc;
+  var api_manage_id = req.query.api_manage_id;
 
   //获取当前用户
   var currentUser = AV.User.current();
@@ -149,6 +150,7 @@ router.get('/create', function(req, res, next) {
     		var App = new APP();
     		App.set("app_name",app_name);
     		App.set("app_desc",app_desc);
+        App.set("api_manage_id",api_manage_id);
 
         if(currentUser){
           //私有用户
@@ -183,6 +185,7 @@ router.get('/create', function(req, res, next) {
         var App = new APP();
         App.set("app_name",app_name);
         App.set("app_desc",app_desc);
+        App.set("api_manage_id",api_manage_id);
 
         if(currentUser){
           //私有用户
@@ -218,7 +221,8 @@ router.get('/create', function(req, res, next) {
 router.post('/edit', function(req, res, next) {
     var data = {
         app_id            : "appid不能为空",
-        edit_app_desc     : ""
+        edit_app_desc     : "",
+        api_manage_id     : ""
     }
     var data = validate(res,req,"GET",data);
     if(!data){
@@ -230,6 +234,7 @@ router.post('/edit', function(req, res, next) {
 
     var app = AV.Object.createWithoutData('APP', data.app_id);
     app.set("app_desc",data.edit_app_desc);
+    app.set("api_manage_id",data.api_manage_id);
 
     // if(currentUser){
     //   //私有用户
