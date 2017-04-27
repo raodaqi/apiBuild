@@ -18,7 +18,7 @@
     "superagent-charset": "^1.1.1",
     "superagent":"2.0.0",
     "lc-build":"1.0.8",
-    "api-send":"1.0.4"
+    "api-send":"1.0.5"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"
