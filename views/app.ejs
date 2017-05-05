@@ -418,7 +418,7 @@
                           '<input type="text" name="'+paraData.para_name+'" class="para-remark ml-10"  style="width:150px;"  placeholder="测试值">'+
                           ' </p>';
         }
-        var editParaContent = '<p>id<span class="ml-10">[ 数据ObjectId</span> ]<input type="text" class="para-remark ml-10" name="id" style="width:150px;" placeholder="测试值"> <span class="ml-10 color-r">必须</span></p>'+paraContentData;
+        var editParaContent = '<p>id<span class="ml-10 desc">[ 数据ObjectId</span> ]<input type="text" class="para-remark ml-10" name="id" style="width:150px;" placeholder="测试值"> <span class="ml-10 color-r">必须</span></p>'+paraContentData;
 
         paraContent = '<p>请求参数</p><div class="code-content">'+editParaContent+'</div>';
         var section = '<section class="sec-content" id="'+data[i].objectId+'edit">'+
@@ -553,6 +553,7 @@
 
         if($(this).next(".color-r").text() && !$(this).val()){
           var desc = $(this).parent().find(".desc").text().split("[")[1];
+          console.log(desc);
           throw desc;
           return false;
         }
