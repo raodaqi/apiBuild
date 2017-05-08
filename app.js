@@ -29,6 +29,8 @@ var requireAuthentication = function(req, res, next) {
 }
 
 //设置跨域访问
+app.all('/test_ceshi/*', requireAuthentication);
+app.all('/test_ceshi/*', requireAuthentication);
 app.all('/test_snake/*', requireAuthentication);
 app.all('/test_snake/*', requireAuthentication);
 app.all('/test_snake/*', requireAuthentication);

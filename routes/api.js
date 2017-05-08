@@ -658,9 +658,10 @@ router.get('/delete', function(req, res, next) {
 
     //判断是否存在该id
     var query = new AV.Query('API');
+    console.log(data.id);
     query.get(data.id).then(function (api) {
         // 成功获得实例
-        // console.log(api);
+        console.log(api);
         if(api){
             // 获取当前生成的文件名称
             var table_name = api.attributes.table_name;
@@ -713,9 +714,9 @@ router.get('/delete', function(req, res, next) {
                                         });
                                     }, function (error) {
                                         var result = {
-                                            code : 401,
+                                            code : 200,
                                             data : [],
-                                            message : "删除失败"
+                                            message : "删除成功"
                                         }
                                         res.send(result);
                                     });
@@ -746,7 +747,7 @@ router.get('/delete', function(req, res, next) {
         }else{
             var result = {
                 code    : 401,
-                message : "删除失败",
+                message : "不存在该id",
                 data : []
             }
             res.send(result);
@@ -756,7 +757,7 @@ router.get('/delete', function(req, res, next) {
         // console.log(error);
         var result = {
             code    : 401,
-            message : "删除失败",
+            message : "查询失败",
             data : []
         }
         res.send(result);
