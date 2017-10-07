@@ -101,6 +101,7 @@ app.use('/todos', require('./routes/todos'));
 app.use('/app', require('./routes/app'));
 app.use('/api', require('./routes/api'));
 app.use('/user', require('./routes/user'));
+app.use('/v1', require('./routes/v1'));
 
 //用户添加路由
 app.use('/test_snake', require('./routes/test_snake'));
